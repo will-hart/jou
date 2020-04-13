@@ -9,12 +9,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @jou/demo build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
+    "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "dev": "concurrently -n game,client,server \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server start\"",
-    "dev:client": "concurrently -n game,client \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\"",
-    "dev:server": "concurrently -n game,server \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/server start\""
+    "dev": "concurrently -n common,demo,game,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server start\"",
+    "dev:client": "concurrently -n common,demo,client \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\"",
+    "dev:server": "concurrently -n common,demo,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/server dev\"",
+    "prestart": "yarn build",
+    "start": "concurrently -n server,client \"yarn workspace @jou/server start\" \"yarn workspace @jou/client start\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.27.0",
