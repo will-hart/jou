@@ -1,0 +1,20 @@
+{
+  "name": "@jou/common",
+  "version": "0.1.0",
+  "description": "Common base functions for building up card games",
+  "main": "lib/src/index.js",
+  "author": "Will Hart",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc -p ./tsconfig.json --watch",
+    "build": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "boardgame.io": "^0.39.6"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "concurrently": "5.1.0",
+    "typescript": "^3.8.3"
+  }
+}
