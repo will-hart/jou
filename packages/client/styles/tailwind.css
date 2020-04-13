@@ -1,0 +1,33 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import 'spinner.css';
+
+a {
+  @apply no-underline text-red-400 font-medium;
+}
+
+a:hover {
+  @apply underline;
+}
+
+h1 {
+  @apply text-3xl;
+}
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-xl;
+}
+
+h4 {
+  @apply text-lg font-bold;
+}
+
+th,
+td {
+  @apply text-center;
+}
