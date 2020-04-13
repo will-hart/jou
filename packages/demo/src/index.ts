@@ -25,7 +25,7 @@ const DemoGame: Game<IGameState> = {
       next: 'play',
       turn: { moveLimit: 1 },
       moves: {
-        drawToFullHand: drawToFullHand,
+        drawToFullHand: { move: drawToFullHand, client: false },
       },
       onBegin: (G: IGameState) => {
         console.log('Entering "drawToFull" phase')

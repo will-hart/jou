@@ -12,7 +12,7 @@
     "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "dev": "concurrently -n common,demo,game,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server start\"",
+    "dev": "concurrently -n common,demo,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server dev\"",
     "dev:client": "concurrently -n common,demo,client \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\"",
     "dev:server": "concurrently -n common,demo,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/server dev\"",
     "prestart": "yarn build",
