@@ -1,0 +1,7 @@
+node_modules
+.env
+.next
+packages/client/.next
+yarn-error.log
+packages/client_old
+packages/server_OLD

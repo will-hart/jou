@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  # db:
+  #   image: "postgres:12"
+  #   environment:
+  #     POSTGRES_DB: template_db_dev
+  #     POSTGRES_USER: root
+  #     POSTGRES_PASSWORD: 1234
+  #   ports:
+  #     - "5432:5432"
+  #   command: postgres
+
+  server:
+    build:
+      context: ./packages/server
+      dockerfile: server.Dockerfile
+    # depends_on:
+    #   - db
+    ports:
+      - "2567:2567"
+
+  client:
+    build:
+      context: ./packages/client
+      dockerfile: client.Dockerfile
+    ports:
+      - "3000:3000"

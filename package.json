@@ -1,0 +1,32 @@
+{
+  "name": "jou",
+  "version": "0.1.0",
+  "description": "Game Jam template based on colyseus",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/client",
+    "packages/server"
+  ],
+  "scripts": {
+    "build": "concurrently \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\"",
+    "dev:client": "yarn workspace @jou/client dev",
+    "dev:server": "yarn workspace @jou/server start"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "concurrently": "5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "prettier": "2.0.4",
+    "typescript": "^3.8.3"
+  }
+}
