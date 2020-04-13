@@ -20,8 +20,20 @@ export const stateFactory = (deck: Deck, numPlayers: number): IGameState => {
       return { ...acc, [item.id]: item }
     }, {}),
     public: {
-      '0': { score: 0, handSize: 0, playedCards: [] },
-      '1': { score: 0, handSize: 0, playedCards: [] },
+      '0': {
+        score: 0,
+        handSize: 0,
+        playedCards: [],
+        isAway: false,
+        name: 'Player 0',
+      },
+      '1': {
+        score: 0,
+        handSize: 0,
+        playedCards: [],
+        isAway: false,
+        name: 'Player 1',
+      },
     },
     secret: {
       discardCardIds: [],

@@ -1,4 +1,4 @@
-import { Game } from 'boardgame.io'
+import { Game, Ctx } from 'boardgame.io'
 import { PlayerView } from 'boardgame.io/core'
 import {
   drawToFullHand,
@@ -44,10 +44,13 @@ const DemoGame: Game<IGameState> = {
         playCard: playCard(canPlayCard, applyDemoCardSideEffects),
       },
       onBegin: () => console.log('Entering "play" phase'),
-      onEnd: calculateScores,
+      onEnd: (G: IGameState, ctx: Ctx) => {
+        calculateScores(G)
+        ctx.events.endTurn() // alternate who goes first
+      },
       endIf: (G: IGameState) =>
         !Object.keys(G.players).some(
-          (p) => G.players[p].handCardIds.length > 1
+          (p) => G.players[p].handCardIds.length > 2
         ),
     },
   },

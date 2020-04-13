@@ -31,6 +31,8 @@ export interface IPlayerPublicData {
   playedCards: string[]
   handSize: number
   score: number
+  isAway: boolean
+  name: string
 }
 
 export interface IGameState {

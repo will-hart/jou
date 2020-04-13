@@ -5,9 +5,11 @@ import { SocketIO } from 'boardgame.io/multiplayer'
 // import { Local } from 'boardgame.io/multiplayer'
 
 import DemoGame from '@jou/demo'
+import { Board } from '../components/ExampleGame'
 
 const GameClient = Client({
   game: DemoGame,
+  board: Board,
   multiplayer: SocketIO({ server: 'localhost:8000' }),
   // multiplayer: Local(),
 })
