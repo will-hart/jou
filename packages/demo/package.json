@@ -1,0 +1,21 @@
+{
+  "name": "@jou/demo",
+  "version": "0.1.0",
+  "description": "A demo card game for jou",
+  "main": "lib/src/index.js",
+  "author": "Will Hart",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc -p ./tsconfig.json --watch",
+    "build": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "boardgame.io": "^0.39.6",
+    "lerna": "^3.20.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "concurrently": "5.1.0",
+    "typescript": "^3.8.3"
+  }
+}

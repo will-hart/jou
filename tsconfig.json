@@ -1,13 +1,11 @@
 {
+  "include": ["packages/client/", "packages/*/src"],
   "compilerOptions": {
-    "outDir": "lib",
-    "target": "es6",
-    "module": "commonjs",
-    "strict": true,
-    "strictNullChecks": false,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true
-  },
-  "include": ["packages/**/*.ts", "packages/**/*.tsx"]
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@stereobooster/*": ["packages/*/src"]
+    }
+  }
 }
