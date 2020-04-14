@@ -16,6 +16,7 @@ export const stateFactory = (deck: Deck, numPlayers: number): IGameState => {
           return { ...acc, [item.id]: item }
         }, {}),
     },
+    availableCards: [], // not used here
     cards: deck.cards.reduce((acc, item) => {
       return { ...acc, [item.id]: item }
     }, {}),
@@ -38,6 +39,10 @@ export const stateFactory = (deck: Deck, numPlayers: number): IGameState => {
     secret: {
       discardCardIds: [],
       drawCardIds: shuffleArray(deck.cards.map((c) => c.id)),
+      rules: {
+        availableCardSize: 0,
+        usePersonalDeck: false,
+      },
     },
   }
 }

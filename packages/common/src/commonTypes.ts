@@ -1,6 +1,8 @@
 export interface IPlayer {
   id: string
   handCardIds: string[]
+  personalDraw?: string[]
+  personalDiscard?: string[]
   maxHandSize: number
 }
 
@@ -39,8 +41,14 @@ export interface IGameState {
   players: { [key: string]: IPlayer }
   cards: { [key: string]: ICardDefinition }
   public: { [key: string]: IPlayerPublicData }
+  availableCards: string[]
   secret: {
     discardCardIds: string[]
     drawCardIds: string[]
+
+    rules: {
+      availableCardSize: number
+      usePersonalDeck: boolean
+    }
   }
 }

@@ -5,7 +5,7 @@ import {
   IGameState,
   playCard,
   canPlayCard,
-  returnAllPlayedToDiscard,
+  moveAllPlayedToDiscard,
   shuffleDiscardIntoDraw,
 } from '@jou/common'
 
@@ -29,7 +29,7 @@ const DemoGame: Game<IGameState> = {
       },
       onBegin: (G: IGameState) => {
         console.log('Entering "drawToFull" phase')
-        returnAllPlayedToDiscard(G)
+        moveAllPlayedToDiscard(G)
         shuffleDiscardIntoDraw(G)
       },
       endIf: (G: IGameState) =>
