@@ -11,6 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@jou/common": "0.1.0",
     "@jou/demo": "0.1.0",
     "@juggle/resize-observer": "^3.1.3",
     "boardgame.io": "^0.39.6",

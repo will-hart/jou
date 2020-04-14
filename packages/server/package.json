@@ -11,6 +11,7 @@
     "start": "ts-node src/index.ts"
   },
   "dependencies": {
+    "@jou/common": "0.1.0",
     "@jou/demo": "0.1.0",
     "boardgame.io": "^0.39.6"
   },
