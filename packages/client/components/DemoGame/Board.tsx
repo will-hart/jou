@@ -1,17 +1,43 @@
 import * as React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { ResizeObserver } from '@juggle/resize-observer'
-import useMeasure from 'react-use-measure'
+import useMeasure, { RectReadOnly } from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
-import { IGameState, ICardDefinition } from '@jou/common'
-import { getTransformForSection, LayoutSection } from '@jou/demo'
+import { IGameState } from '@jou/common'
+import { LayoutSection, getCardLocationData } from '@jou/demo'
 
 import PlayerList from '../../game/PlayerList'
 import TurnIndicator from '../../game/TurnIndicator'
 import PlayingCard from './PlayingCard'
+import { getRangeArray, getDummyCard } from '../../utilities'
 
-import { getDummyCard, getRangeArray } from '../../utilities'
+const getPlayerCards = (
+  state: IGameState,
+  bounds: RectReadOnly,
+  meId: string,
+  playCard: (id: string) => void
+) =>
+  Object.values(state.cards).map((card) => {
+    const loc = getCardLocationData(state, meId, card.id)
+    const isDummy = loc.sec === LayoutSection.DRAW_PILE
+    const onClick =
+      !isDummy && loc.sec === LayoutSection.PLAYER_HAND
+        ? () => playCard(card.id) // can play from hand
+        : undefined // otherwise do nothing
+
+    return (
+      <PlayingCard
+        key={card.id}
+        card={card}
+        location={loc}
+        containerBounds={bounds}
+        isDummy={isDummy}
+        onClick={onClick}
+        animate={loc.sec === LayoutSection.PLAYER_HAND}
+      />
+    )
+  })
 
 interface BoardProps {
   G: IGameState
@@ -23,9 +49,11 @@ interface BoardProps {
 }
 
 const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
+  // keep me/opponent Ids in state
   const [meId, setMeId] = useState<string>(null)
   const [opponentId, setOpponentId] = useState<string>(null)
 
+  // effect that updates my id / opponent id on changes
   useEffect(() => {
     if (!state) return
 
@@ -33,112 +61,43 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
     setOpponentId(Object.keys(state?.public).filter((k) => k !== meId)?.[0])
   }, [setMeId, setOpponentId, state, meId, opponentId])
 
+  // measure the board so we can scale the layout to fit
   const [ref, bounds] = useMeasure({
     debounce: 10,
     polyfill: ResizeObserver,
   })
 
-  const getCards = useCallback(() => {
-    if (
-      !state ||
-      !state.players ||
-      !state.public ||
-      !state.public[meId] ||
-      !state.public[opponentId] ||
-      !state.players[meId]
-    )
-      return
+  // memoize the card generatror function
+  const cardGenerator = useCallback(() => {
+    return getPlayerCards(state, bounds, meId, moves.playCard)
+  }, [state, bounds, meId, moves])
 
-    const opponentPlayedCount =
-      state.public[opponentId]?.playedCards.length || 0
-    const myHandCount = state.players[meId]?.handCardIds.length || 0
-    const myPlayedCount = state.public[meId]?.playedCards.length || 0
-
-    let opPlay = 0
-    let myHand = 0
-    let myPlay = 0
-
-    const getSection = (
-      card: ICardDefinition
-    ): { sec: LayoutSection; idx: number; totIdx: number } => {
-      if (state.players[meId]?.handCardIds.includes(card.id)) {
-        return {
-          sec: LayoutSection.PLAYER_HAND,
-          idx: myHand++,
-          totIdx: myHandCount,
-        }
-      }
-      if (state.public[meId].playedCards.includes(card.id))
-        return {
-          sec: LayoutSection.PLAYER_PLAY,
-          idx: myPlay++,
-          totIdx: myPlayedCount,
-        }
-      if (state.public[opponentId].playedCards.includes(card.id))
-        return {
-          sec: LayoutSection.OPPONENT_PLAY,
-          idx: opPlay++,
-          totIdx: opponentPlayedCount,
-        }
-      return { sec: LayoutSection.DRAW_PILE, idx: 0, totIdx: 0 }
-    }
-
-    return Object.values(state.cards).map((card) => {
-      const { sec, idx, totIdx } = getSection(card)
-
-      return (
-        <PlayingCard
-          key={card.id}
-          transform={getTransformForSection(bounds, sec, totIdx, idx)}
-          card={card}
-          dummy={sec === LayoutSection.DRAW_PILE}
-          animate={sec === LayoutSection.PLAYER_HAND}
-          onClick={
-            sec === LayoutSection.PLAYER_HAND
-              ? () => moves.playCard(card.id)
-              : undefined
-          }
-        />
-      )
-    })
-  }, [meId, opponentId, state, bounds, moves])
-  // can't useMemo here as it doesn't properly notify
   const opponentCards = getRangeArray(state.public[opponentId]?.handSize || 0)
-  const opponentTransforms = opponentCards.map((idx) => ({
-    card: null,
-    tx: getTransformForSection(
-      bounds,
-      LayoutSection.OPPONENT_HAND,
-      state.public[opponentId].handSize,
-      idx
-    ),
-  }))
 
+  // render all the cards all the time. makes it easier to animate when they are discarded etc.
   return (
     <div ref={ref} className="flex-grow fixed top-0 left-0 w-full h-screen">
-      <TurnIndicator isYourTurn={meId && context?.currentPlayer === meId} />
-      <PlayerList players={state?.public} />
-
-      {opponentTransforms.map(({ card, tx }, idx) => (
+      {cardGenerator()}
+      {opponentCards.map((id) => (
         <PlayingCard
-          key={card?.id || `opp_hand_${idx}`}
-          card={card || getDummyCard('opp_hand')}
-          transform={tx}
+          key={`opponent_hand_card_${id}`}
+          card={getDummyCard(`opponent_hand_${id}`, '/cards/back.png')}
+          containerBounds={bounds}
+          location={{
+            sec: LayoutSection.OPPONENT_HAND,
+            idx: id,
+            totIdx: opponentCards.length,
+          }}
         />
       ))}
-
-      {getCards()}
-
       <PlayingCard
-        key="draw_pile"
-        transform={getTransformForSection(
-          bounds,
-          LayoutSection.DRAW_PILE,
-          1,
-          1
-        )}
-        card={getDummyCard('draw_back', '/cards/back.png')}
+        key="card_draw_pile"
+        card={getDummyCard('draw_pile', '/cards/back.png')}
+        containerBounds={bounds}
+        location={{ sec: LayoutSection.DRAW_PILE, idx: 0, totIdx: 0 }}
       />
+      <PlayerList players={state.public} />
+      <TurnIndicator isYourTurn={context.currentPlayer === meId} />
     </div>
   )
 }

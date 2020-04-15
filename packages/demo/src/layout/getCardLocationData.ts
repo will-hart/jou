@@ -2,6 +2,12 @@ import { IGameState } from '@jou/common/src/commonTypes'
 
 import { LayoutSection } from './'
 
+export interface ICardLocationData {
+  sec: LayoutSection
+  idx: number
+  totIdx: number
+}
+
 /**
  * Gets the location of a card for the given player and card ID, also
  * returning useful information for rendering the card amongst groups of
@@ -15,18 +21,20 @@ export const getCardLocationData = (
   G: IGameState,
   playerId: string,
   cardId: string
-): { sec: LayoutSection; idx: number; totIdx: number } => {
+): ICardLocationData => {
   // if the card doesn't exist, assume its in the draw pile
-  if (!G.cards[cardId])
+  if (!G.cards[cardId] || !G.players[playerId])
     return { sec: LayoutSection.DRAW_PILE, idx: 0, totIdx: 0 }
 
   // if the card is in the users hand, render it there
-  const handIdx = G.players[playerId].handCardIds.findIndex((c) => c === cardId)
+  const handIdx = G.players[playerId]?.handCardIds.findIndex(
+    (c) => c === cardId
+  )
   if (handIdx !== -1) {
     return {
       sec: LayoutSection.PLAYER_HAND,
       idx: handIdx,
-      totIdx: G.players[playerId].handCardIds.length,
+      totIdx: G.players[playerId]?.handCardIds.length || 0,
     }
   }
 
