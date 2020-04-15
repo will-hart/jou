@@ -3,18 +3,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { ResizeObserver } from '@juggle/resize-observer'
 import useMeasure from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
-import { MoveMap } from 'boardgame.io/dist/types/src/types'
 
 import { IGameState, ICardDefinition } from '@jou/common'
+import { getTransformForSection, LayoutSection } from '@jou/demo'
 
 import PlayerList from '../../game/PlayerList'
 import TurnIndicator from '../../game/TurnIndicator'
 import PlayingCard from './PlayingCard'
-
-import {
-  getTransformForSection,
-  LayoutSection,
-} from '../../layout/ExampleGameLayoutEngine'
 
 import { getDummyCard, getRangeArray } from '../../utilities'
 
@@ -94,15 +89,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
       return (
         <PlayingCard
           key={card.id}
-          transform={getTransformForSection(
-            bounds.x,
-            bounds.y,
-            bounds.width,
-            bounds.height,
-            sec,
-            totIdx,
-            idx
-          )}
+          transform={getTransformForSection(bounds, sec, totIdx, idx)}
           card={card}
           dummy={sec === LayoutSection.DRAW_PILE}
           animate={sec === LayoutSection.PLAYER_HAND}
@@ -120,10 +107,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
   const opponentTransforms = opponentCards.map((idx) => ({
     card: null,
     tx: getTransformForSection(
-      bounds.left,
-      bounds.top,
-      bounds.width,
-      bounds.height,
+      bounds,
       LayoutSection.OPPONENT_HAND,
       state.public[opponentId].handSize,
       idx
@@ -148,10 +132,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
       <PlayingCard
         key="draw_pile"
         transform={getTransformForSection(
-          bounds.left,
-          bounds.top,
-          bounds.width,
-          bounds.height,
+          bounds,
           LayoutSection.DRAW_PILE,
           1,
           1

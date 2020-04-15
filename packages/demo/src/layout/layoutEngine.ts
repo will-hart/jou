@@ -123,19 +123,28 @@ const getXOffsetForIndex = (count: number, index: number) => {
   )
 }
 
+export interface ICardBounds {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 /**
  * Calculates the width, height and x/y position and rotation of a card based on the segment and screen size
  *
- * @param containerWidth The width in pixels of the parent container
- * @param containerHeight The height in pixels of the parent container
+ * @param bounds: an object containing x, y, width and height of the parent container
  * @param section The section that this card belongs to
+ * @param sectionCount The number of items in this section
  * @param index The index of the card within the segment (0-based)
  */
 export const getTransformForSection = (
-  xOffset: number,
-  yOffset: number,
-  containerWidth: number,
-  containerHeight: number,
+  {
+    x: xOffset,
+    y: yOffset,
+    width: containerWidth,
+    height: containerHeight,
+  }: ICardBounds,
   section: LayoutSection,
   sectionCount: number,
   index: number

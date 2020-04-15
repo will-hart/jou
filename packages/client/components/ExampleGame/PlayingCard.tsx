@@ -4,7 +4,7 @@ import { animated, useSpring, config, to as interpolate } from 'react-spring'
 import { useGesture } from 'react-use-gesture'
 import { FullGestureState } from 'react-use-gesture/dist/types'
 
-import { Transform, getTransformStyle } from '../../layout/Transform'
+import { Transform, getTransformStyle } from '@jou/demo'
 import { ICardDefinition } from '@jou/common'
 
 interface PlayingCardProps {

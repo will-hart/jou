@@ -63,3 +63,4 @@ const DemoGame: Game<IGameState> = {
 }
 
 export default DemoGame
+export * from './layout'
