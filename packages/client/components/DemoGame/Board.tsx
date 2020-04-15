@@ -83,7 +83,10 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
 
   // render all the cards all the time. makes it easier to animate when they are discarded etc.
   return (
-    <div ref={ref} className="flex-grow fixed top-0 left-0 w-full h-screen">
+    <div
+      ref={ref}
+      className="flex-grow fixed top-0 left-0 w-full h-screen select-none"
+    >
       {cardGenerator()}
       {opponentCards.map((id) => (
         <PlayingCard
