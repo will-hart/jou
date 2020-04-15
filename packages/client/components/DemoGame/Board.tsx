@@ -44,7 +44,7 @@ interface BoardProps {
   G: IGameState
   ctx: Ctx
   moves: {
-    drawFullHand: () => void
+    drawToFullHand: () => void
     playCard: (cardId) => void
   }
 }
@@ -105,6 +105,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
         card={getDummyCard('draw_pile', '/cards/back.png')}
         containerBounds={bounds}
         location={{ sec: LayoutSection.DRAW_PILE, idx: 0, totIdx: 0 }}
+        onClick={moves.drawToFullHand}
       />
       <PlayerList players={state.public} />
       <TurnIndicator isYourTurn={context.currentPlayer === meId} />

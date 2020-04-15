@@ -47,6 +47,7 @@ const PlayingCard = ({
           ...style,
           transform: transformStyle(),
         }}
+        onClick={!animate && onClick ? () => onClick(card) : undefined}
       >
         {' '}
       </animated.div>
