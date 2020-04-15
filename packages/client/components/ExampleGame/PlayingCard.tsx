@@ -79,7 +79,7 @@ const PlayingCard = ({
   return (
     <animated.div
       className={`flex flex-col absolute justify-center items-center shadow-md rounded-md bg-cover bg-no-repeat mx-1 ${
-        isDragging ? 'z-50' : ''
+        isDragging ? 'z-50 select-none' : ''
       }`}
       {...(animate ? bindGesture() : {})}
       style={{
