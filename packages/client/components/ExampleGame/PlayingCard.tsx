@@ -32,6 +32,7 @@ const PlayingCard = ({
 
   const [{ tx }, setSpringProps] = useSpring(() => ({
     tx: transform.getTransformArray(),
+    imediate: false,
     onRest: () => setIsDragging(false || isDragDown),
   }))
   const bindGesture = useGesture({
@@ -54,6 +55,7 @@ const PlayingCard = ({
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       setSpringProps({
         tx: transform.getTransformArray(),
+        immediate: down,
         config: config.stiff,
       })
 
