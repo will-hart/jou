@@ -11,12 +11,22 @@ export class Transform {
   height: number
   rotation: number
   scale: number
-  delta: number[] // x, y, scale
+  delta: number[]
+
+  constructor(width: number, height: number) {
+    this.x = 0
+    this.y = 0
+    this.width = width
+    this.height = height
+    this.rotation = 0
+    this.scale = 1
+    this.delta = [0, 0, 0]
+  }
 
   /**
    * Returns the transform with [x, y, scale, rotation]
    */
-  getTransformArray = () => {
+  getTransformArray() {
     return [
       this.delta[0],
       this.delta[1],
@@ -32,16 +42,6 @@ export class Transform {
     t.rotation = this.rotation
 
     return t
-  }
-
-  constructor(width: number, height: number) {
-    this.x = 0
-    this.y = 0
-    this.delta = [0, 0, 0]
-    this.width = width
-    this.height = height
-    this.rotation = 0
-    this.scale = 1
   }
 
   toBaseStyle() {
