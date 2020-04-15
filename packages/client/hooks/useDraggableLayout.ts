@@ -15,7 +15,6 @@ export interface IDraggableLayoutState {
   style: { [key: string]: string }
   isMoving: boolean
   isDragging: boolean
-  target: { x: number; y: number }
 }
 
 /**
@@ -31,7 +30,9 @@ const useDraggableLayout = (
   const [fromTransform, setFromTransform] = useState<Transform | null>(
     bounds && location ? getTransformForSection(bounds, location) : null
   )
-  const [toTransform, setToTransform] = useState<Transform | null>(null)
+  const [toTransform, setToTransform] = useState<Transform | null>(
+    fromTransform
+  )
 
   // declare state variables
   const [state, setState] = useState<IDraggableLayoutState>({
@@ -43,45 +44,38 @@ const useDraggableLayout = (
       width: '0px',
       height: '0px',
     },
-    target: null,
   })
-
-  useEffect(() => {
-    // the transform has changed, set the new animation targets
-    // if there is already a from location, then this is a new location
-    if (state.isMoving) {
-      setToTransform(getTransformForSection(bounds, location))
-    } else {
-      setFromTransform(getTransformForSection(bounds, location))
-    }
-  }, [location, bounds, state.isMoving])
 
   // create a spring that uses the fromTransform as the anchor point
   const [{ tx }, setSpringProps] = useSpring(() => ({
-    tx: fromTransform.getTransformArray(),
+    tx: toTransform.getTransformArray(),
+    from: { tx: fromTransform.getTransformArray() },
     imediate: false,
     onRest: () => {
       // hide drag effects
       setState((prev) => ({ ...prev, isMoving: false || state.isDragging }))
-
-      // store the new location if we are moving the card permanently
-      if (toTransform) {
-        setFromTransform(toTransform)
-        setToTransform(null)
-      }
+      // reset the starting location
+      setFromTransform(getTransformForSection(bounds, location))
     },
   }))
 
-  // when the transforms change, update the base style
+  // when the from transform changes, update the base style
   useEffect(() => {
     setState((prev) => ({ ...prev, style: fromTransform.toBaseStyle() }))
   }, [fromTransform])
 
+  const { isMoving, style } = state
+
+  // when the transform changes (due to new bounds / location), update the animation targets
+  useEffect(() => {
+    setFromTransform(getTransformForSection(bounds, location))
+  }, [location, bounds])
+
   const bindGesture = useGesture({
     onDrag: ({ down, elapsedTime, movement }: FullGestureState<'drag'>) => {
-      fromTransform.delta = down ? [...movement, 0.5] : [0, 0, 0]
+      toTransform.delta = down ? [...movement, 0.5] : [0, 0, 0]
 
-      setState((prev) => ({ ...prev, isDragging: down }))
+      setState((prev) => ({ ...prev, isMoving: true, isDragging: down }))
 
       // check if we should click
       if (!down) {
@@ -97,14 +91,12 @@ const useDraggableLayout = (
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       setSpringProps({
-        tx: fromTransform.getTransformArray(),
+        tx: toTransform.getTransformArray(),
         immediate: down,
         config: config.stiff,
       })
     },
   })
-
-  const { isMoving, style } = state
 
   return {
     style,

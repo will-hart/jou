@@ -25,6 +25,15 @@ export class Transform {
     ]
   }
 
+  applyTransformAsNew(): Transform {
+    const t = new Transform(this.width, this.height)
+    t.x = this.x + this.delta[0]
+    t.y = this.y + this.delta[1]
+    t.rotation = this.rotation
+
+    return t
+  }
+
   constructor(width: number, height: number) {
     this.x = 0
     this.y = 0
