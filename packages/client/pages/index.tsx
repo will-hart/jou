@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Client } from 'boardgame.io/react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import { SocketIO } from 'boardgame.io/multiplayer'
 // import { Local } from 'boardgame.io/multiplayer'
 
@@ -23,7 +24,14 @@ const GamePage = () => {
   if (!playerId) return <p>LOADING...</p>
 
   console.log(`Assuming player ID '${playerId}'`)
-  return <GameClient playerID={`${playerId}`} />
+  return (
+    <>
+      <Head>
+        <title>Jou Demo Game</title>
+      </Head>
+      <GameClient playerID={`${playerId}`} />
+    </>
+  )
 }
 
 export default GamePage
