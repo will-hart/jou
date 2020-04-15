@@ -16,13 +16,14 @@ const getPlayerCards = (
   state: IGameState,
   bounds: RectReadOnly,
   meId: string,
+  isMyTurn: boolean,
   playCard: (id: string) => void
 ) =>
   Object.values(state.cards).map((card) => {
     const loc = getCardLocationData(state, meId, card.id)
     const isDummy = loc.sec === LayoutSection.DRAW_PILE
     const onClick =
-      !isDummy && loc.sec === LayoutSection.PLAYER_HAND
+      !isDummy && loc.sec === LayoutSection.PLAYER_HAND && isMyTurn
         ? () => playCard(card.id) // can play from hand
         : undefined // otherwise do nothing
 
@@ -69,8 +70,14 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
 
   // memoize the card generatror function
   const cardGenerator = useCallback(() => {
-    return getPlayerCards(state, bounds, meId, moves.playCard)
-  }, [state, bounds, meId, moves])
+    return getPlayerCards(
+      state,
+      bounds,
+      meId,
+      meId === context.currentPlayer,
+      moves.playCard
+    )
+  }, [state, bounds, meId, moves, context])
 
   const opponentCards = getRangeArray(state.public[opponentId]?.handSize || 0)
 
