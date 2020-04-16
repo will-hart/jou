@@ -25,9 +25,10 @@ const PlayingCard = ({
   const {
     gestureBindings,
     isMoving,
+    readyToDraw,
     style,
     transformStyle,
-  } = useDraggableLayout(location, containerBounds, () => {
+  } = useDraggableLayout(location, containerBounds, card.id, () => {
     onClick && onClick(card)
   })
 
@@ -35,24 +36,22 @@ const PlayingCard = ({
     ? {}
     : { backgroundImage: `url(${card.imagePath})` }
 
-  return (
-    <animated.div style={style}>
-      <animated.div
-        className={`flex flex-col absolute justify-center items-center rounded-md bg-cover bg-no-repeat mx-1 ${
-          isDummy ? '' : 'shadow-md'
-        } ${isMoving ? 'z-50 select-none shadow-2xl' : ''}`}
-        {...(animate ? gestureBindings() : {})}
-        style={{
-          ...cardBackground,
-          ...style,
-          transform: transformStyle(),
-        }}
-        onClick={!animate && onClick ? () => onClick(card) : undefined}
-      >
-        {' '}
-      </animated.div>
+  return readyToDraw ? (
+    <animated.div
+      className={`fixed block rounded-md mx-1 bg-cover bg-no-repeat${
+        isDummy ? '' : ' shadow-md'
+      }${isMoving ? ' z-50 select-none shadow-2xl' : ''}`}
+      {...(animate ? gestureBindings() : {})}
+      style={{
+        ...style,
+        ...cardBackground,
+        transform: transformStyle(),
+      }}
+      onClick={!animate && onClick ? () => onClick(card) : undefined}
+    >
+      {' '}
     </animated.div>
-  )
+  ) : null
 }
 
 export default PlayingCard

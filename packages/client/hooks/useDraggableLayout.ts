@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useReducer } from 'react'
 import {
   ICardLocationData,
   Transform,
   ICardBounds,
   getTransformForSection,
   getTransformStyle,
+  LayoutSection,
 } from '@jou/demo'
 
 import { useSpring, config, to as interpolate } from 'react-spring'
@@ -15,6 +16,82 @@ export interface IDraggableLayoutState {
   style: { [key: string]: string }
   isMoving: boolean
   isDragging: boolean
+  fromTransform: Transform
+  xysr: number[]
+}
+
+const getDeltaArray = (
+  x: number,
+  y: number,
+  scaleDelta: number,
+  tx?: Transform
+) => {
+  return [x, y, (tx?.scale || 1) + scaleDelta, tx?.rotation || 0]
+}
+
+const repositionElement = (
+  state: IDraggableLayoutState,
+  tx: Transform
+): IDraggableLayoutState => {
+  if (!tx) {
+    console.log('No transform in reposition, exiting')
+    return state
+  }
+
+  const newDelta = getDeltaArray(0, 0, 0, tx) // state.fromTransform
+
+  return {
+    ...state,
+    fromTransform: tx,
+    style: tx.toBaseStyle(),
+    xysr: newDelta,
+  }
+}
+
+const resetReducer = (
+  state: IDraggableLayoutState,
+  tx: Transform
+): IDraggableLayoutState => {
+  return {
+    ...state,
+    fromTransform: tx,
+    style: tx.toBaseStyle(),
+    xysr: getDeltaArray(0, 0, 0, tx),
+  }
+}
+
+const onDrag = (
+  state: IDraggableLayoutState,
+  payload: { delta: number[]; isDragging: boolean }
+): IDraggableLayoutState => ({
+  ...state,
+  xysr: payload.delta,
+  isDragging: payload.isDragging,
+  isMoving: true,
+})
+
+const draggableReducer = (
+  state: IDraggableLayoutState,
+  action: {
+    type: 'RESET' | 'ON_DRAG' | 'REPOSITION' | 'ON_REST' | 'SET_DRAG'
+    payload?: unknown
+  }
+): IDraggableLayoutState => {
+  switch (action.type) {
+    case 'RESET':
+      return resetReducer(state, action.payload as Transform)
+    case 'ON_DRAG':
+      return onDrag(
+        state,
+        action.payload as { delta: number[]; isDragging: boolean }
+      )
+    case 'REPOSITION':
+      return repositionElement(state, action.payload as Transform)
+    case 'ON_REST':
+      return { ...state, isMoving: state.isDragging }
+    default:
+      throw new Error()
+  }
 }
 
 /**
@@ -24,56 +101,29 @@ export interface IDraggableLayoutState {
 const useDraggableLayout = (
   location: ICardLocationData,
   bounds: ICardBounds,
+  cardId: string,
   onClick?: () => void
 ) => {
-  // store transforms
-  const fromTransform = useRef<Transform>(
-    bounds && location ? getTransformForSection(bounds, location) : null
-  )
-  const toTransform = useRef<Transform>(fromTransform.current)
+  const [state, dispatch] = useReducer(draggableReducer, {
+    style: null,
+    isMoving: false,
+    isDragging: false,
+    fromTransform: null,
+    xysr: [0, 0, 1, location.sec === LayoutSection.OPPONENT_HAND ? 180 : 0],
+  } as IDraggableLayoutState)
 
   const oldLocation = useRef<ICardLocationData>()
   const oldBounds = useRef<ICardBounds>()
 
-  // declare state variables
-  const [state, setState] = useState<IDraggableLayoutState>({
-    isMoving: false,
-    isDragging: false,
-    style: fromTransform.current?.toBaseStyle() || {
-      top: '0px',
-      left: '0px',
-      width: '0px',
-      height: '0px',
-    },
-  })
-
-  const { isMoving, style } = state
-
   // create a spring that uses the fromTransform as the anchor point
   const [{ tx }, setSpringProps] = useSpring(() => ({
-    tx: toTransform.current.getTransformArray(),
-    from: { tx: fromTransform.current.getTransformArray() },
+    tx: state.xysr,
+    from: { tx: [0, 0, 1, 0] },
     imediate: false,
     onRest: () => {
-      // hide drag effects
-      setState((prev) => ({ ...prev, isMoving: false || state.isDragging }))
+      dispatch({ type: 'ON_REST' })
     },
   }))
-
-  const setFromTransform = useCallback(
-    (val: Transform) => {
-      fromTransform.current = val
-      setState((prev) => ({
-        ...prev,
-        style: fromTransform.current.toBaseStyle(),
-      }))
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      setSpringProps({
-        from: { tx: fromTransform.current.getTransformArray() },
-      })
-    },
-    [setSpringProps]
-  )
 
   // when the transform changes (due to new bounds / location), update the animation targets
   useEffect(() => {
@@ -95,23 +145,23 @@ const useDraggableLayout = (
     oldLocation.current = location
     oldBounds.current = bounds
 
-    setFromTransform(getTransformForSection(bounds, location))
-
-    // animate to the new location
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    setSpringProps({
-      tx: fromTransform.current.getTransformArray(),
+    dispatch({
+      type: 'REPOSITION',
+      payload: getTransformForSection(bounds, location),
     })
-    console.log(
-      'changed',
-      toTransform.current.getTransformArray(),
-      fromTransform.current.getTransformArray()
-    )
-  }, [location, bounds, setFromTransform, setSpringProps, isMoving])
+  }, [bounds, location, cardId])
 
   const bindGesture = useGesture({
     onDrag: ({ down, elapsedTime, movement }: FullGestureState<'drag'>) => {
-      setState((prev) => ({ ...prev, isMoving: true, isDragging: down }))
+      dispatch({
+        type: 'ON_DRAG',
+        payload: {
+          isDragging: down,
+          delta: down
+            ? [...movement, 1.5, state.fromTransform.rotation]
+            : [0, 0, 1, state.fromTransform.rotation],
+        },
+      })
 
       // check if we should click
       if (!down) {
@@ -123,19 +173,23 @@ const useDraggableLayout = (
           onClick && onClick()
         }
       }
-
-      toTransform.current.delta = down ? [...movement, 0.5] : [0, 0, 0]
-
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      setSpringProps({
-        tx: toTransform.current.getTransformArray(),
-        immediate: down,
-        config: config.stiff,
-      })
     },
   })
 
+  const { style, isMoving, isDragging, xysr } = state
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    setSpringProps({
+      tx: xysr,
+      from: { tx: xysr },
+      immediate: isDragging,
+      config: config.stiff,
+    })
+  }, [isDragging, state.fromTransform, xysr, setSpringProps])
+
   return {
+    readyToDraw: !!state.fromTransform,
     style,
     isMoving,
     gestureBindings: bindGesture,
