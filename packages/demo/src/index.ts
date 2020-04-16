@@ -32,6 +32,14 @@ const DemoGame: Game<IGameState> = {
         moveAllPlayedToDiscard(G)
         shuffleDiscardIntoDraw(G)
       },
+      onEnd: (G: IGameState) => {
+        Object.values(G.players).forEach((player) => {
+          // sort hand cards by affinity
+          player.handCardIds.sort((a, b) =>
+            G.cards[a].affinity.localeCompare(G.cards[b].affinity)
+          )
+        })
+      },
       endIf: (G: IGameState) =>
         !Object.keys(G.players).some(
           (p) => G.players[p].maxHandSize !== G.players[p].handCardIds.length
@@ -63,3 +71,4 @@ const DemoGame: Game<IGameState> = {
 }
 
 export default DemoGame
+export * from './layout'

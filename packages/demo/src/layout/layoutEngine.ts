@@ -1,4 +1,5 @@
 import { Transform } from './Transform'
+import { ICardLocationData } from '.'
 
 export enum LayoutSection {
   DRAW_PILE,
@@ -123,22 +124,29 @@ const getXOffsetForIndex = (count: number, index: number) => {
   )
 }
 
+export interface ICardBounds {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 /**
  * Calculates the width, height and x/y position and rotation of a card based on the segment and screen size
  *
- * @param containerWidth The width in pixels of the parent container
- * @param containerHeight The height in pixels of the parent container
- * @param section The section that this card belongs to
+ * @param bounds: an object containing x, y, width and height of the parent container
+ * @param location The section that this card belongs to
+ * @param sectionCount The number of items in this section
  * @param index The index of the card within the segment (0-based)
  */
 export const getTransformForSection = (
-  xOffset: number,
-  yOffset: number,
-  containerWidth: number,
-  containerHeight: number,
-  section: LayoutSection,
-  sectionCount: number,
-  index: number
+  {
+    x: xOffset,
+    y: yOffset,
+    width: containerWidth,
+    height: containerHeight,
+  }: ICardBounds,
+  location: ICardLocationData
 ): Transform => {
   // recalculate the card layout if required (memoized)
   recalculateLayout(xOffset, yOffset, containerWidth, containerHeight)
@@ -149,17 +157,19 @@ export const getTransformForSection = (
   )
 
   // set x/y positions
-  if (section === LayoutSection.DRAW_PILE) {
+  if (location.sec === LayoutSection.DRAW_PILE) {
     tfm.x = boardConfiguration.drawPileX
     tfm.y = boardConfiguration.yCoords[LayoutSection.DRAW_PILE]
   } else {
     // default for most cases
-    tfm.x = boardConfiguration.xOffset + getXOffsetForIndex(sectionCount, index)
-    tfm.y = boardConfiguration.yCoords[section]
+    tfm.x =
+      boardConfiguration.xOffset +
+      getXOffsetForIndex(location.totIdx, location.idx)
+    tfm.y = boardConfiguration.yCoords[location.sec]
   }
 
   // rotate / offset hands
-  if (section === LayoutSection.OPPONENT_HAND) {
+  if (location.sec === LayoutSection.OPPONENT_HAND) {
     tfm.rotation = 180
   }
 

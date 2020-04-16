@@ -29,8 +29,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.77339804"
-     inkscape:cx="838.23379"
-     inkscape:cy="513.35429"
+     inkscape:cx="628.12206"
+     inkscape:cy="771.95334"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -55,7 +55,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -384,5 +384,37 @@
          x="357.26331"
          y="109.93199"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:'Berlin Sans FB';-inkscape-font-specification:'Berlin Sans FB';text-align:center;text-anchor:middle;fill:#5d6c53;stroke:none;stroke-width:0.26458332">Card 5</tspan></text>
+    <rect
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="D:\Code\jou\packages\client\public\cards\back.png"
+       style="opacity:1;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:0.56747979;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
+       id="rect866"
+       width="79.375"
+       height="105.83334"
+       x="-1.503982e-14"
+       y="-20.50004" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:'Droid Sans Mono';-inkscape-font-specification:'Droid Sans Mono';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="39.429119"
+       y="-4.1714573"
+       id="text870"><tspan
+         sodipodi:role="line"
+         id="tspan868"
+         x="39.429119"
+         y="-4.1714573"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;font-family:'Bauhaus 93';-inkscape-font-specification:'Bauhaus 93, ';text-align:center;text-anchor:middle;fill:#ffffff;stroke:none;stroke-width:0.26458332;">Example deck</tspan></text>
+    <text
+       id="text874"
+       y="4.0986538"
+       x="39.76329"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:'Droid Sans Mono';-inkscape-font-specification:'Droid Sans Mono';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:'Berlin Sans FB';-inkscape-font-specification:'Berlin Sans FB';text-align:center;text-anchor:middle;fill:#ffffff;stroke:none;stroke-width:0.26458332;"
+         y="4.0986538"
+         x="39.76329"
+         id="tspan872"
+         sodipodi:role="line">Back</tspan></text>
   </g>
 </svg>
