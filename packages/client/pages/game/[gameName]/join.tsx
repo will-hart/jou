@@ -9,6 +9,7 @@ import { Card, Alert, AlertType } from '../../../components'
 import Head from 'next/head'
 import useGameLobby from '../../../hooks/useGameLobby'
 import { Room } from '../../../hooks/useLobby'
+import { BASE_URL } from '../../../constants'
 
 const getLobby = (
   room: Room | undefined,
@@ -66,7 +67,7 @@ const JoinGamePage = () => {
     : slotIdFromStorage
 
   const { error, room, slot } = useGameLobby(
-    'http://localhost:8000',
+    BASE_URL,
     'demo',
     roomId,
     claimedSlot

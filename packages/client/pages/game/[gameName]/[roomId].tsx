@@ -12,11 +12,12 @@ import {
   getPlayerCredentialsForRoom,
 } from '../../../utilities'
 import { Spinner } from '../../../components'
+import { BASE_URL } from '../../../constants'
 
 const GameClient = Client({
   game: DemoGame,
   board: Board,
-  multiplayer: SocketIO({ server: 'localhost:8000' }),
+  multiplayer: SocketIO({ server: BASE_URL }),
   // multiplayer: Local(),
 })
 
