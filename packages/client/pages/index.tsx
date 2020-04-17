@@ -1,37 +1,22 @@
 import * as React from 'react'
-import { Client } from 'boardgame.io/react'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { SocketIO } from 'boardgame.io/multiplayer'
-// import { Local } from 'boardgame.io/multiplayer'
 
-import DemoGame from '@jou/demo'
-import { Board } from '../components/DemoGame'
+import { Card } from '../components'
+import GameBrowser from '../components/Lobby/GameBrowser'
 
-const GameClient = Client({
-  game: DemoGame,
-  board: Board,
-  multiplayer: SocketIO({ server: 'localhost:8000' }),
-  // multiplayer: Local(),
-})
+// import { validateRouterArg } from '../utilities'
 
-const GamePage = () => {
-  const { query } = useRouter()
-  const playerId = Array.isArray(query.playerId)
-    ? query.playerId[0]
-    : query.playerId
-
-  if (!playerId) return <p>LOADING...</p>
-
-  console.log(`Assuming player ID '${playerId}'`)
+const GameHomePage = () => {
   return (
-    <>
+    <Card>
       <Head>
-        <title>Jou Demo Game</title>
+        <title>jou - Available Games</title>
       </Head>
-      <GameClient playerID={`${playerId}`} />
-    </>
+
+      <GameBrowser />
+    </Card>
   )
 }
 
-export default GamePage
+export default GameHomePage
