@@ -6,13 +6,14 @@ import { Card, Spinner } from '../../../components'
 import useLobby from '../../../hooks/useLobby'
 import Head from 'next/head'
 import RoomList from '../../../components/Lobby/RoomList'
+import { BASE_URL } from '../../../constants'
 
 const LobbyPage = () => {
   const { query, push } = useRouter()
   const gameId = validateRouterArg(query.gameId)
 
   const { createAndJoinGame, loading, roomList } = useLobby(
-    'http://localhost:8000',
+    BASE_URL,
     'demo',
     push
   )
