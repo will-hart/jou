@@ -3,6 +3,6 @@ import DemoGame from '@jou/demo'
 const Server = require('boardgame.io/server').Server
 
 const server = new Server({ games: [DemoGame] })
-server.run(8000)
+server.run(process.env.PORT || 8000)
 
 export default server
