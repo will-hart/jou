@@ -1,1 +1,0 @@
-api: yarn run start:server
