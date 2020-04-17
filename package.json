@@ -10,11 +10,13 @@
   ],
   "scripts": {
     "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
+    "build:server": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/server build",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "dev": "concurrently -n common,demo,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server dev\"",
     "dev:client": "concurrently -n common,demo,client \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\"",
     "dev:server": "concurrently -n common,demo,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/server dev\"",
+    "start:server": "yarn build:server && yarn workspace @jou/server start",
     "prestart": "yarn build",
     "start": "concurrently -n server,client \"yarn workspace @jou/server start\" \"yarn workspace @jou/client start\""
   },
@@ -29,5 +31,8 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "prettier": "2.0.4",
     "typescript": "^3.8.3"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
