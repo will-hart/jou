@@ -19,6 +19,8 @@ const DemoGame: Game<IGameState> = {
     return stateFactory(deck, 2)
   },
 
+  name: 'demo',
+
   phases: {
     drawToFull: {
       start: true,

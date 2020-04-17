@@ -32,3 +32,30 @@ export const getRangeArray = (n: number): number[] => {
 
   return arr
 }
+
+const JOULS_CREDS_KEY = 'jou_credentials'
+
+export const storePlayerCredentials = (
+  roomId: string,
+  slotId: number,
+  credential: string
+) => {
+  if (typeof localStorage === 'undefined') return
+
+  localStorage.setItem(
+    JOULS_CREDS_KEY,
+    JSON.stringify({
+      ...JSON.parse(localStorage.getItem(JOULS_CREDS_KEY)),
+      [roomId]: { slotId, credential },
+    })
+  )
+}
+
+export const getPlayerCredentialsForRoom = (
+  roomId: string
+): { slotId: number; credential: string } | undefined => {
+  if (typeof localStorage === 'undefined') return null
+
+  const creds = JSON.parse(localStorage.getItem(JOULS_CREDS_KEY))
+  return creds[roomId]
+}

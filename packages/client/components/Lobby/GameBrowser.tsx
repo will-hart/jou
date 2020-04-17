@@ -18,7 +18,7 @@ const GameBrowser = () => {
             <div className="border-r border-gray-200"> </div>
             <div className="text-center flex-grow text-gray-300">vs AI</div>
             <div className="border-r border-gray-200"> </div>
-            <Link href="/lobby/demo">
+            <Link href="/game/demo/lobby?context=multiplayer">
               <a className="text-center flex-grow">vs People</a>
             </Link>
           </div>
