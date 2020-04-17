@@ -10,7 +10,7 @@
     "build": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "boardgame.io": "^0.39.6"
+    "boardgame.io": "^0.39.7"
   },
   "devDependencies": {
     "@types/node": "^13.11.1",
