@@ -1,6 +1,7 @@
 import { Deck } from '@jou/common'
 
-const getImagePath = (name: string) => `/cards/${name}.png`
+const getImagePath = (name: string) =>
+  `https://jou-cards.s3-ap-southeast-2.amazonaws.com/${name}.png`
 
 export const deck: Deck = {
   cards: [

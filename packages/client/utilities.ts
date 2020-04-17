@@ -1,8 +1,9 @@
 import { ICardDefinition } from '@jou/common'
+import { DEMO_BASE_CARD_PATH } from './constants'
 
 export const getDummyCard = (
   name: string,
-  image = '/cards/back.png',
+  image = `${DEMO_BASE_CARD_PATH}/back.png`,
   key = '__deck'
 ): ICardDefinition => ({
   affinity: '',

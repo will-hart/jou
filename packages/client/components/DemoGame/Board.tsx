@@ -11,6 +11,7 @@ import PlayerList from '../../game/PlayerList'
 import TurnIndicator from '../../game/TurnIndicator'
 import PlayingCard from './PlayingCard'
 import { getRangeArray, getDummyCard } from '../../utilities'
+import { DEMO_BASE_CARD_PATH } from '../../constants'
 
 const getPlayerCards = (
   state: IGameState,
@@ -91,7 +92,10 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
       {opponentCards.map((id) => (
         <PlayingCard
           key={`opponent_hand_card_${id}`}
-          card={getDummyCard(`opponent_hand_${id}`, '/cards/back.png')}
+          card={getDummyCard(
+            `opponent_hand_${id}`,
+            `${DEMO_BASE_CARD_PATH}/back.png`
+          )}
           containerBounds={bounds}
           location={{
             sec: LayoutSection.OPPONENT_HAND,
@@ -102,7 +106,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
       ))}
       <PlayingCard
         key="card_draw_pile"
-        card={getDummyCard('draw_pile', '/cards/back.png')}
+        card={getDummyCard('draw_pile', `${DEMO_BASE_CARD_PATH}/back.png`)}
         containerBounds={bounds}
         location={{ sec: LayoutSection.DRAW_PILE, idx: 0, totIdx: 0 }}
         onClick={moves.drawToFullHand}
