@@ -7,7 +7,11 @@ import { SocketIO } from 'boardgame.io/multiplayer'
 
 import DemoGame from '@jou/demo'
 import { Board } from '../../../components/DemoGame'
-import { validateRouterArg } from '../../../utilities'
+import {
+  validateRouterArg,
+  getPlayerCredentialsForRoom,
+} from '../../../utilities'
+import { Spinner } from '../../../components'
 
 const GameClient = Client({
   game: DemoGame,
@@ -18,10 +22,12 @@ const GameClient = Client({
 
 const GamePage = () => {
   const { query } = useRouter()
-  // const gameId = validateRouterArg(query.gameId)
+  const gameName = validateRouterArg(query.gameName)
+  const roomId = validateRouterArg(query.roomId)
   const playerId = validateRouterArg(query.playerId)
+  const creds = roomId && getPlayerCredentialsForRoom(roomId)
 
-  if (!playerId) return <p>LOADING...</p>
+  if (!playerId || !gameName || !roomId || !creds) return <Spinner />
 
   console.log(`Assuming player ID '${playerId}'`)
   return (
@@ -29,7 +35,11 @@ const GamePage = () => {
       <Head>
         <title>Jou Demo Game</title>
       </Head>
-      <GameClient playerID={`${playerId}`} />
+      <GameClient
+        playerID={`${playerId}`}
+        gameID={roomId}
+        credentials={creds.credential}
+      />
     </>
   )
 }

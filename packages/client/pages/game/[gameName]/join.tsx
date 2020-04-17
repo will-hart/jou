@@ -13,6 +13,7 @@ import { Room } from '../../../hooks/useLobby'
 const getLobby = (
   room: Room | undefined,
   gameName: string,
+  roomId: string,
   slot: number,
   push: (url: string) => Promise<boolean>
 ) => {
@@ -36,7 +37,7 @@ const getLobby = (
       <div className="mx-auto mt-4">
         <button
           disabled={!isReady}
-          onClick={() => push(`/game/${gameName}/${slot}`)}
+          onClick={() => push(`/game/${gameName}/${roomId}?playerId=${slot}`)}
           className={`font-bold px-6 py-3
               ${
                 isReady
@@ -53,7 +54,7 @@ const getLobby = (
 
 const JoinGamePage = () => {
   const { query, push } = useRouter()
-  const gameId = validateRouterArg(query.gameId)
+  const gameName = validateRouterArg(query.gameName)
   const roomId = validateRouterArg(query.roomId)
 
   // if undefined, we are waiting for the page to load - don't request a slot yet
@@ -80,7 +81,7 @@ const JoinGamePage = () => {
       {error ? (
         <Alert type={AlertType.Error}>{error}</Alert>
       ) : (
-        getLobby(room, gameId, slot, push)
+        getLobby(room, gameName, roomId, slot, push)
       )}
     </Card>
   )
