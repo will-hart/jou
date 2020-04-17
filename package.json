@@ -11,6 +11,7 @@
   "scripts": {
     "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
     "build:server": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/server build",
+    "heroku-postbuild": "yarn build:server",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "dev": "concurrently -n common,demo,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server dev\"",
