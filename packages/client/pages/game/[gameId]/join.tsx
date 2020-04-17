@@ -14,9 +14,12 @@ const JoinGamePage = () => {
   const roomId = validateRouterArg(query.roomId)
 
   // if undefined, we are waiting for the page to load - don't request a slot yet
+  const slotIdFromStorage = getPlayerCredentialsForRoom(roomId)?.slotId
   const claimedSlot = !roomId
     ? undefined
-    : getPlayerCredentialsForRoom(roomId)?.slotId || null
+    : typeof slotIdFromStorage === 'undefined' // slot can be 0 so need to explicitly check for undefined
+    ? null
+    : slotIdFromStorage
 
   const { error, room } = useGameLobby(
     'http://localhost:8000',

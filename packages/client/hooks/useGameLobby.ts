@@ -24,26 +24,35 @@ const useGameLobby = (
   const [error, setError] = useState<string>('')
   const [slot, setSlot] = useState<number>(claimedSlot)
   const [lobbyState, setLobbyState] = useState<LobbyJoinState>(null)
+  const [pollInterval, setPollInterval] = useState<number>(undefined)
+  const stopPolling = () => setPollInterval(undefined)
 
   // if a slot ID is provided, we have already joined. Go straight to JOINED state
   useEffect(() => {
     if (claimedSlot === null) {
       // no slot has been claimed - attempt to join
+      if (verbose)
+        console.log('CLAIM - no slot claimed, setting init', claimedSlot)
       setLobbyState(LobbyJoinState.INIT)
     } else if (typeof claimedSlot === 'undefined') {
       // waiting for the join page to load properly
+      if (verbose)
+        console.log('CLAIM - claimedSlot undefined, preparing', claimedSlot)
       setLobbyState(LobbyJoinState.PREPARING)
     } else {
       // a slot has already been claimed!
+      if (verbose)
+        console.log('CLAIM - slot claimed, skipping to joined', claimedSlot)
       setSlot(claimedSlot)
       setLobbyState(LobbyJoinState.JOINED)
+      setPollInterval(5000)
     }
-  }, [claimedSlot])
+  }, [claimedSlot, verbose])
 
   const refreshRoom = useCallback(async (): Promise<void> => {
     // items are not populated
     if (!url || !gameName || !gameId) {
-      if (verbose) console.log('RefreshRoom incomplete args')
+      if (verbose) console.log('REFRESH_ROOM - incomplete args, skipping')
       return
     }
 
@@ -54,11 +63,29 @@ const useGameLobby = (
       ![LobbyJoinState.INIT, LobbyJoinState.JOINED].includes(lobbyState)
     ) {
       if (verbose)
-        console.log('Refresh room incompatible lobby state', lobbyState)
+        console.log(
+          'REFRESH_ROOM - incompatible lobby state, skipping',
+          lobbyState
+        )
       return
     }
 
-    const room: Room = await ky.get(`${url}/games/${gameName}/${gameId}`).json()
+    if (verbose) console.log('REFRESH_ROOM - refreshing', lobbyState)
+    const room: Room | null = await ky
+      .get(`${url}/games/${gameName}/${gameId}`)
+      .json<Room>()
+      .catch((err) => {
+        console.warn('REFRESH ERROR', err)
+        setError(
+          `Error refreshing room - ${
+            err.response.status === 404
+              ? 'room not found'
+              : `Code ${err.response.status}`
+          }`
+        )
+        return null
+      })
+
     setRoom(room)
 
     if (lobbyState === LobbyJoinState.INIT) {
@@ -67,10 +94,7 @@ const useGameLobby = (
   }, [lobbyState, url, gameName, gameId, verbose])
 
   // set up some interval hooks for tracking the game state (to see when all players have joined)
-  const [pollInterval, setPollInterval] = useState<number>(undefined)
-  const clearPollInterval = () => setPollInterval(undefined)
   useInterval(() => {
-    if (verbose) console.log('Polling')
     refreshRoom().catch(console.error)
   }, pollInterval)
 
@@ -79,21 +103,25 @@ const useGameLobby = (
   useEffect(() => {
     // should be in idle state before requesting
     if (lobbyState !== LobbyJoinState.READY_TO_JOIN) {
-      if (verbose) console.log('Lobby is not ready to join', lobbyState)
+      if (verbose)
+        console.log(
+          'JOIN - Lobby is not in the correct state to attempt join',
+          lobbyState
+        )
       return
     }
 
     // require all args
     if (!room || !gameId || !gameName || !url) {
-      if (verbose) console.log('Lobby args are incomplete')
+      if (verbose) console.log('JOIN - Lobby args are incomplete')
       return
     }
 
-    if (verbose) console.log('running hook', room, gameId, gameName, url)
+    if (verbose) console.log('JOIN - joining', room, gameId, gameName, url)
 
     // check for a free slot
     const freeSlotId = room.players.find((p) => !p.name)?.id
-    if (verbose) console.log(`Attempting to claim slot ${freeSlotId}`)
+    if (verbose) console.log(`JOIN - Attempting to claim slot ${freeSlotId}`)
 
     if (typeof freeSlotId === 'undefined') {
       setError('Server full')
@@ -105,6 +133,7 @@ const useGameLobby = (
 
     // join the game
     ky.post(`${url}/games/${gameName}/${gameId}/join`, {
+      retry: 0,
       json: {
         playerID: freeSlotId,
         playerName: `Player ${freeSlotId}`,
@@ -120,11 +149,11 @@ const useGameLobby = (
         storePlayerCredentials(gameId, freeSlotId, playerCredentials)
         setSlot(freeSlotId)
         setLobbyState(LobbyJoinState.JOINED)
+        setPollInterval(5000)
+        if (verbose) console.log('JOIN - claimed slot', freeSlotId)
       })
-      // start polling the server
-      .then(() => setPollInterval(5000))
       .catch((err) => {
-        console.error(err)
+        console.error('JOIN ERROR', err)
         setLobbyState(LobbyJoinState.ERROR)
         setError(`Error joining game - ${err}`)
       })
@@ -143,7 +172,7 @@ const useGameLobby = (
     lobbyState,
     refreshRoom,
 
-    clearPollInterval,
+    stopPolling,
     setPollInterval,
   }
 }

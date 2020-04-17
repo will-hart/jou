@@ -55,7 +55,8 @@ export const getPlayerCredentialsForRoom = (
   roomId: string
 ): { slotId: number; credential: string } | undefined => {
   if (typeof localStorage === 'undefined') return null
+  if (roomId === null) return null
 
   const creds = JSON.parse(localStorage.getItem(JOULS_CREDS_KEY))
-  return creds[roomId]
+  return creds ? creds[roomId] : null
 }
