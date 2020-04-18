@@ -1,2 +1,2 @@
-export const LD46_GAME_NAME = 'Spectre'
-export const LD46_GAME_ID = 'spectre'
+export const LD46_GAME_NAME = 'By the sword'
+export const LD46_GAME_ID = 'by_the_sword'
