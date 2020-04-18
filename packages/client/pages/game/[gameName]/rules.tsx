@@ -13,7 +13,7 @@ const DemogameRules = dynamic(() =>
 const LobbyPage = () => {
   const { query } = useRouter()
 
-  const gameId = validateRouterArg(query.gameId)
+  const gameName = validateRouterArg(query.gameName)
 
   return (
     <Card>
@@ -21,7 +21,7 @@ const LobbyPage = () => {
         <title>Game Lobby</title>
       </Head>
 
-      {gameId === 'demo' && <DemogameRules />}
+      {gameName === 'demo' && <DemogameRules />}
     </Card>
   )
 }
