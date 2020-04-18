@@ -1,6 +1,6 @@
 # Design document
 
-## LD46 (Bread and circus)
+## LD46 (By the sword)
 
 > Theme: "Keep it alive"
 

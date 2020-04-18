@@ -8,3 +8,5 @@ packages/server_OLD
 packages/**/lib
 
 .now
+packages/ld46/docs/cards/nanDECK.exe
+packages/ld46/docs/cards/nandeck.ini
