@@ -1,4 +1,9 @@
-﻿LINK=Characters.xlsx
+﻿BORDER=RECTANGLE
+UNIT=MM
+PAGE=210,297,PORTRAIT,HV
+DPI=96
+CARDSIZE=63.5,88.9
+LINK=Characters.xlsx
 VISUAL=, 10, 10
 ;Image(locked)
 IMAGE="1-{(bg)}",[bg],0%,0%,100%,100%
