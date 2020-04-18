@@ -100,8 +100,9 @@ I want some of these mechanisms:
     3. spend excitement to purchase a new warrior (one excitement per warrior level)
     4. spend excitement to increase their hand size
     5. pass
-    6. **Q: Is there an arena map?** --> move around the arena **I think this will be a bit too much**
+    6. move to another square on the arena
 - **combat vs creatures**
+  - combat may only be carried out against enemies in the same area of the arena
   - combat cards are placed by players throughout a turn, however the effects
     (if any) are only applied at the end of the turn
   - if in a single turn players can play sufficient moves to defeat a creature,
@@ -118,3 +119,14 @@ I want some of these mechanisms:
 - **clean up**
   - players may discard up to one card from their hand
   - players then draw back up to their current hand size
+
+## Fonts and colours
+
+- text font - Petrona (Open font license, via google fonts)
+- header font - Roman SD (100% free from da font, by Steve Deffeyes)
+
+## Changes end of day 1
+
+- monster level and number of monsters scales with arena excitement
+  - justification for this is moving to bigger arenas
+- can play one card per fighter per turn
