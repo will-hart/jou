@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { LD46_GAME_NAME } from './ld46_constants'
+
+import { LD46_GAME_NAME } from '@jou/ld46'
 
 const DemoGameRules = () => {
   return (

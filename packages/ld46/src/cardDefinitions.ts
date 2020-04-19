@@ -142,7 +142,7 @@ const getCharacterCard = (
   level: number,
   combat: number,
   cost: number,
-  extraEffects?: IEffectDefinition[]
+  extraEffects: IEffectDefinition[] = []
 ): ICardDefinition => ({
   id: `character_${id}`,
   affinity: 'character',

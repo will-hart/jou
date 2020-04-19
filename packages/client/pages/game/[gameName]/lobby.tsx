@@ -10,18 +10,18 @@ import { BASE_URL } from '../../../constants'
 
 const LobbyPage = () => {
   const { query, push } = useRouter()
-  const gameId = validateRouterArg(query.gameId)
+  const gameName = validateRouterArg(query.gameName)
 
   const { createAndJoinGame, loading, roomList } = useLobby(
     BASE_URL,
-    'demo',
+    gameName,
     push
   )
 
   return (
     <Card>
       <Head>
-        <title>Game browser - {gameId}</title>
+        <title>Game browser - {gameName}</title>
       </Head>
       <div className="flex-row flex justify-between">
         <h2>Game browser</h2>

@@ -13,6 +13,7 @@
   "dependencies": {
     "@jou/common": "0.1.0",
     "@jou/demo": "0.1.0",
+    "@jou/ld46": "0.1.0",
     "boardgame.io": "^0.39.7"
   },
   "devDependencies": {

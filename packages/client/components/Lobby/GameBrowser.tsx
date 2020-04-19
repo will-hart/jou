@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { LD46_GAME_NAME, LD46_GAME_ID } from '../LD46/ld46_constants'
+import { LD46_GAME_NAME, LD46_GAME_ID } from '@jou/ld46'
 
 const GameBrowser = () => {
   return (
@@ -38,7 +38,7 @@ const GameBrowser = () => {
             <div className="border-r border-gray-200"> </div>
             <div className="text-center flex-grow text-gray-300">vs AI</div>
             <div className="border-r border-gray-200"> </div>
-            <Link href="/game/demo/lobby?context=multiplayer">
+            <Link href={`/game/${LD46_GAME_ID}/lobby?context=multiplayer`}>
               <a className="text-center flex-grow">vs People</a>
             </Link>
           </div>

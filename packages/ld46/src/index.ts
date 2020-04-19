@@ -11,7 +11,11 @@ import {
   playCardWithTarget,
 } from './moves'
 import { actionDeck, creatureDeck, fighterDeck } from './cardDefinitions'
-import { SINGLE_PLAYER_WIN_SCORE, TEAM_WIN_SCORE } from './constants'
+import {
+  SINGLE_PLAYER_WIN_SCORE,
+  TEAM_WIN_SCORE,
+  LD46_GAME_ID,
+} from './constants'
 import { resolveCombat } from './combat'
 
 const ByTheSwordGame: Game<ByTheSwordState> = {
@@ -20,7 +24,7 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     return stateFactory(actionDeck, creatureDeck, fighterDeck, 2)
   },
 
-  name: 'by-the-sword',
+  name: LD46_GAME_ID,
 
   phases: {
     initialFighterDraft: {
@@ -121,3 +125,4 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
 
 export default ByTheSwordGame
 // export * from './layout'
+export * from './constants'

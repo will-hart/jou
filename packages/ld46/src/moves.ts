@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io'
 
 import { ByTheSwordState } from './state'
-import { INVALID_MOVE } from 'boardgame.io/dist/types/packages/core'
+import { INVALID_MOVE } from 'boardgame.io/core'
 import { EffectType } from './effectDefinitions'
 import { creatureDeck } from './cardDefinitions'
 import {

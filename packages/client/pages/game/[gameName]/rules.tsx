@@ -2,10 +2,10 @@ import * as React from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { LD46_GAME_ID } from '@jou/ld46'
 
 import { Card, Alert, AlertType } from '../../../components'
 import { validateRouterArg } from '../../../utilities'
-import { LD46_GAME_ID } from '../../../components/LD46/ld46_constants'
 
 const DemogameRules = dynamic(() =>
   import('../../../components/DemoGame/Rules')

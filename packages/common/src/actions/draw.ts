@@ -47,7 +47,7 @@ export const drawCard = (G: IDefaultGameState, ctx: Ctx) => {
 }
 
 export const drawCardFromPersonalDeck = (G: IDefaultGameState, ctx: Ctx) => {
-  if (!G.secret.rules.usePersonalDeck) return
+  if (!G.rules.usePersonalDeck) return
   const playerId = ctx.currentPlayer
   _drawCardToPlayerHand(G, playerId, true)
 }
@@ -65,7 +65,7 @@ export const drawToFullHandFromPersonalDeck = (
   G: IDefaultGameState,
   ctx: Ctx
 ) => {
-  if (!G.secret.rules.usePersonalDeck) return
+  if (!G.rules.usePersonalDeck) return
   while (
     G.public[ctx.currentPlayer].handSize <
     G.players[ctx.currentPlayer].maxHandSize
@@ -76,7 +76,7 @@ export const drawToFullHandFromPersonalDeck = (
 
 export const drawCardToAvailableCards = (G: IDefaultGameState) => {
   if (!G.availableCards) return
-  if (G.availableCards.length >= G.secret.rules.availableCardSize) return
+  if (G.availableCards.length >= G.rules.availableCardSize) return
 
   if (G.secret.drawCardIds.length === 0) {
     if (G.secret.discardCardIds.length > 0) {
@@ -110,7 +110,7 @@ export const claimAvailableCardToPersonalDiscard = (
   ctx: Ctx,
   cardId: string
 ) => {
-  if (!G.secret.rules.usePersonalDeck) {
+  if (!G.rules.usePersonalDeck) {
     console.log('Personal deck not enabled')
     return
   }
@@ -126,7 +126,7 @@ export const claimAvailableCardToPersonalDraw = (
   ctx: Ctx,
   cardId: string
 ) => {
-  if (!G.secret.rules.usePersonalDeck) {
+  if (!G.rules.usePersonalDeck) {
     console.log('Personal deck not enabled')
     return
   }
