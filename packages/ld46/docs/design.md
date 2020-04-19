@@ -127,6 +127,8 @@ I want some of these mechanisms:
 
 ## Changes end of day 1
 
-- monster level and number of monsters scales with arena excitement
-  - justification for this is moving to bigger arenas
+- ~~monster level and number of monsters scales with arena excitement~~
+  - ~~justification for this is moving to bigger arenas~~
 - can play one card per fighter per turn
+- players draft monster cards
+- if a player kills a monster solo they get 2x the Popularity
