@@ -5,22 +5,26 @@ import { LD46_GAME_NAME } from './ld46_constants'
 const DemoGameRules = () => {
   return (
     <>
-      <img src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/banner.png" />
+      <img
+        className="object-contain lg:object-cover"
+        src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/banner.png"
+      />
       <div className="m-4 w-2/3 mx-auto">
         <h2>{LD46_GAME_NAME} Game Rules</h2>
         <Link href="/">
           <a>Back to game list</a>
         </Link>
-        <p className="mt-4 italic">
+        <div className="mt-4 italic">
           By the Sword is a (semi-)cooperative card game for 1-4 players. Guide
           your group of Gladiators through the arena in Ancient Rome. Work
           together to stay alive by inspiring the crowd and please the Emperor
           Caligula. Be careful, unless one player gets too popular and decides
           to take the glory for themself!
-        </p>
+        </div>
 
-        <p className="mt-4">
-          <strong>Cards</strong>: There are three decks in the game:
+        <h3 className="mt-4">Cards</h3>
+        <div className="mt-4">
+          There are three decks in the game:
           <ol className="list-disc pl-8">
             <li>
               <em>Action cards</em> are things that your gladiators can do
@@ -34,38 +38,45 @@ const DemoGameRules = () => {
               the arena
             </li>
           </ol>
-        </p>
+        </div>
 
-        <p className="mt-4">
-          <strong>Basic Gameplay</strong>: Players draft a pool of warriors,
-          then &quot;purchase&quot; creatures to fight in the arena by playing
-          action cards. Players aim to increase the <em>excitement</em> in the
-          arena by playing specific cards and defeating creatures. Players each
-          have their own popularity level and the arena also has a popularity
-          level.
-        </p>
+        <h3 className="mt-4">Basic Gameplay</h3>
+        <div className="mt-4">
+          Players draft a pool of warriors, then &quot;purchase&quot; creatures
+          to fight in the arena by playing action cards. Players aim to increase
+          the <em>excitement</em> in the arena by playing specific cards and
+          defeating creatures. Players each have their own popularity level and
+          the arena also has a popularity level.
+        </div>
 
-        <p className="mt-4">
-          <strong>Winning and losing</strong>: If the arena excitement level
-          reaches 50, then the player&apos;s are pardoned by the Emperor and
-          win. If one player is remaining, and their individual popularity is
-          above 30, they win and the other players lose. If all players are
-          eliminated before popularity reaches the correct level, they lose.
-        </p>
+        <h3 className="mt-4">Winning and losing</h3>
+        <div className="mt-4">
+          If the arena excitement level reaches 50, then the player&apos;s are
+          pardoned by the Emperor and win. If one player is remaining, and their
+          individual popularity is above 30, they win and the other players
+          lose. If all players are eliminated before popularity reaches the
+          correct level, they lose.
+        </div>
 
-        <p className="mt-4">
-          <strong>Action and Fighter Cards</strong>
-          <img src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/card_details.png" />
-        </p>
+        <h3 className="mt-4">Action and Fighter Cards</h3>
+        <div className="mt-4">
+          <img
+            className="mx-auto object-contain lg:object-cover"
+            src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/card_details.png"
+          />
+        </div>
 
-        <p className="mt-4">
-          <strong>Creature Cards</strong>
-          <img src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/creature_details.png" />
-        </p>
+        <h3 className="mt-4">Creature Cards</h3>
+        <div className="mt-4">
+          <img
+            className="mx-auto object-contain lg:object-cover"
+            src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/creature_details.png"
+          />
+        </div>
 
-        <p className="mt-4">
-          <strong>Sequence of play</strong>: The game has the following turn
-          sequence:
+        <h3 className="mt-4">Sequence of play</h3>
+        <div className="mt-4">
+          The game has the following turn sequence:
           <ol className="list-decimal pl-8">
             <li>Draft gladiators</li>
             <li>Draft monsters</li>
@@ -84,7 +95,7 @@ const DemoGameRules = () => {
               return to step 1
             </li>
           </ol>
-        </p>
+        </div>
       </div>
     </>
   )
