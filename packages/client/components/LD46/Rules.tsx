@@ -38,17 +38,24 @@ const DemoGameRules = () => {
 
         <p className="mt-4">
           <strong>Basic Gameplay</strong>: Players draft a pool of warriors,
-          then "purchase" creatures to fight in the arena by playing action
-          cards. Players aim to increase the <em>excitement</em> in the arena by
-          playing specific cards and defeating creatures. Players each have
-          their own popularity level and the arena also has a popularity level.
+          then &quot;purchase&quot; creatures to fight in the arena by playing
+          action cards. Players aim to increase the <em>excitement</em> in the
+          arena by playing specific cards and defeating creatures. Players each
+          have their own popularity level and the arena also has a popularity
+          level.
         </p>
+
         <p className="mt-4">
           <strong>Winning and losing</strong>: If the arena excitement level
-          reaches 50, then the player's are pardoned by the Emperor and win. If
-          one player is remaining, and their individual popularity is above 30,
-          they win and the other players lose. If all players are eliminated
-          before popularity reaches the correct level, they lose.
+          reaches 50, then the player&apos;s are pardoned by the Emperor and
+          win. If one player is remaining, and their individual popularity is
+          above 30, they win and the other players lose. If all players are
+          eliminated before popularity reaches the correct level, they lose.
+        </p>
+
+        <p className="mt-4">
+          <strong>Cards</strong>
+          <img src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/card_details.png" />
         </p>
 
         <p className="mt-4">
