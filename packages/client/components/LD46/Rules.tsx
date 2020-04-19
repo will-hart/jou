@@ -54,8 +54,13 @@ const DemoGameRules = () => {
         </p>
 
         <p className="mt-4">
-          <strong>Cards</strong>
+          <strong>Action and Fighter Cards</strong>
           <img src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/card_details.png" />
+        </p>
+
+        <p className="mt-4">
+          <strong>Creature Cards</strong>
+          <img src="https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/creature_details.png" />
         </p>
 
         <p className="mt-4">
