@@ -126,12 +126,14 @@ export const actionDeck: Deck = {
 
 export const creatureDeck: Deck = {
   cards: [
-    ...Array(48)
+    ...Array(9)
       .fill(null)
       .map((_, idx) => ({
-        id: `creature_${idx}`,
+        id: `creature_${idx + 1}`,
         affinity: 'creature',
-        imagePath: getImagePath(`creatures_${idx.toString().padStart(2, '0')}`),
+        imagePath: getImagePath(
+          `creatures_${(idx + 1).toString().padStart(2, '0')}`
+        ),
         effects: [],
       })),
   ],
@@ -156,13 +158,15 @@ const getCharacterCard = (
 })
 
 // ideally would generate this from the EXCEL nandeck file or generate both from a config... shrug
-export const fighterDeck: Deck = {
+export const characterDeck: Deck = {
   cards: [
     ...Array(6)
       .fill(null)
-      .map((_, idx) => getCharacterCard(idx + 1, 1, 1, 1), [
-        { name: EffectType.INITIAL, value: 0 },
-      ]), // level 1, cost 1, cp 1
+      .map((_, idx) =>
+        getCharacterCard(idx + 1, 1, 1, 1, [
+          { name: EffectType.INITIAL, value: 0 },
+        ])
+      ), // level 1, cost 1, cp 1
     ...Array(5)
       .fill(null)
       .map((_, idx) => getCharacterCard(idx + 7, 2, 2, 2)), // level 2, cost 2, cp 2
