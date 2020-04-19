@@ -71,7 +71,7 @@ const JoinGamePage = () => {
 
   const { error, room, slot } = useGameLobby(
     BASE_URL,
-    'demo',
+    gameName,
     roomId,
     claimedSlot
   )
