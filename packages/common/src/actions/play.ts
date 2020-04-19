@@ -37,8 +37,8 @@ export const playCard = (
     ctx: Ctx,
     cardId: string
   ) => boolean
-) => (G: IDefaultGameState, ctx: Ctx, cardId: string) => {
-  if (canPlayCardChecker && !canPlayCardChecker(G, ctx, cardId)) return
+) => (G: IDefaultGameState, ctx: Ctx, cardId: string): boolean => {
+  if (canPlayCardChecker && !canPlayCardChecker(G, ctx, cardId)) return false
 
   // remove the card from the player
   const player = G.players[ctx.currentPlayer]
@@ -52,4 +52,6 @@ export const playCard = (
     // add the card to the played cards list for this player
     G.public[ctx.currentPlayer].playedCards.push(cardId)
   }
+
+  return true
 }

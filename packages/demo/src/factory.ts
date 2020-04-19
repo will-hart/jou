@@ -47,10 +47,10 @@ export const stateFactory = (
     secret: {
       discardCardIds: [],
       drawCardIds: shuffleArray(deck.cards.map((c) => c.id)),
-      rules: {
-        availableCardSize: 0,
-        usePersonalDeck: false,
-      },
+    },
+    rules: {
+      availableCardSize: 0,
+      usePersonalDeck: false,
     },
   }
 }
