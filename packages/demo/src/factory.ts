@@ -1,12 +1,20 @@
-import { Deck, IGameState, IPlayer, shuffleArray } from '@jou/common'
+import {
+  Deck,
+  IDefaultGameState,
+  IPlayerPrivateData,
+  shuffleArray,
+} from '@jou/common'
 
-export const stateFactory = (deck: Deck, numPlayers: number): IGameState => {
+export const stateFactory = (
+  deck: Deck,
+  numPlayers: number
+): IDefaultGameState => {
   return {
     players: {
       ...Array(numPlayers)
         .fill(null)
         .map(
-          (_, id): IPlayer => ({
+          (_, id): IPlayerPrivateData => ({
             id: `${id}`,
             maxHandSize: 5,
             handCardIds: [],

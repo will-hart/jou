@@ -2,7 +2,7 @@ import { Game, Ctx } from 'boardgame.io'
 import { PlayerView } from 'boardgame.io/core'
 import {
   drawToFullHand,
-  IGameState,
+  IDefaultGameState,
   playCard,
   canPlayCard,
   moveAllPlayedToDiscard,
@@ -13,8 +13,8 @@ import { deck } from './cardDefinitions'
 import { stateFactory } from './factory'
 import { applyDemoCardSideEffects, calculateScores } from './sideEffects'
 
-const DemoGame: Game<IGameState> = {
-  setup: (ctx, setupData): IGameState => {
+const DemoGame: Game<IDefaultGameState> = {
+  setup: (ctx, setupData): IDefaultGameState => {
     console.log(ctx, setupData)
     return stateFactory(deck, 2)
   },
@@ -29,12 +29,12 @@ const DemoGame: Game<IGameState> = {
       moves: {
         drawToFullHand: { move: drawToFullHand, client: false },
       },
-      onBegin: (G: IGameState) => {
+      onBegin: (G: IDefaultGameState) => {
         console.log('Entering "drawToFull" phase')
         moveAllPlayedToDiscard(G)
         shuffleDiscardIntoDraw(G)
       },
-      onEnd: (G: IGameState) => {
+      onEnd: (G: IDefaultGameState) => {
         Object.values(G.players).forEach((player) => {
           // sort hand cards by affinity
           player.handCardIds.sort((a, b) =>
@@ -42,7 +42,7 @@ const DemoGame: Game<IGameState> = {
           )
         })
       },
-      endIf: (G: IGameState) =>
+      endIf: (G: IDefaultGameState) =>
         !Object.keys(G.players).some(
           (p) => G.players[p].maxHandSize !== G.players[p].handCardIds.length
         ),
@@ -54,18 +54,18 @@ const DemoGame: Game<IGameState> = {
         playCard: playCard(canPlayCard, applyDemoCardSideEffects),
       },
       onBegin: () => console.log('Entering "play" phase'),
-      onEnd: (G: IGameState, ctx: Ctx) => {
+      onEnd: (G: IDefaultGameState, ctx: Ctx) => {
         calculateScores(G)
         ctx.events.endTurn() // alternate who goes first
       },
-      endIf: (G: IGameState) =>
+      endIf: (G: IDefaultGameState) =>
         !Object.keys(G.players).some(
           (p) => G.players[p].handCardIds.length > 2
         ),
     },
   },
 
-  endIf: (G: IGameState) => {
+  endIf: (G: IDefaultGameState) => {
     return Object.keys(G.players).some((p) => G.public[p].score >= 30)
   },
 

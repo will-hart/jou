@@ -4,7 +4,7 @@ import { ResizeObserver } from '@juggle/resize-observer'
 import useMeasure, { RectReadOnly } from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
-import { IGameState } from '@jou/common'
+import { IDefaultGameState } from '@jou/common'
 import { LayoutSection, getCardLocationData } from '@jou/demo'
 
 import PlayerList from '../../game/PlayerList'
@@ -14,7 +14,7 @@ import { getRangeArray, getDummyCard } from '../../utilities'
 import { DEMO_BASE_CARD_PATH } from '../../constants'
 
 const getPlayerCards = (
-  state: IGameState,
+  state: IDefaultGameState,
   bounds: RectReadOnly,
   meId: string,
   isMyTurn: boolean,
@@ -42,7 +42,7 @@ const getPlayerCards = (
   })
 
 interface BoardProps {
-  G: IGameState
+  G: IDefaultGameState
   ctx: Ctx
   moves: {
     drawToFullHand: () => void

@@ -1,4 +1,4 @@
-export interface IPlayer {
+export interface IPlayerPrivateData {
   id: string
   handCardIds: string[]
   personalDraw?: string[]
@@ -8,7 +8,7 @@ export interface IPlayer {
 
 export interface IEffectDefinition {
   name: string
-  value: string
+  value: string | number
 }
 
 export interface ICardDefinition {
@@ -37,10 +37,10 @@ export interface IPlayerPublicData {
   name: string
 }
 
-export interface IGameState {
-  players: { [key: string]: IPlayer }
+export interface IGameState<TPlayerPrivate, TPlayerPublic> {
+  players: { [key: string]: TPlayerPrivate }
   cards: { [key: string]: ICardDefinition }
-  public: { [key: string]: IPlayerPublicData }
+  public: { [key: string]: TPlayerPublic }
   availableCards: string[]
   secret: {
     discardCardIds: string[]
@@ -52,3 +52,9 @@ export interface IGameState {
     }
   }
 }
+
+// shortcut to default interface used in e.g. demo
+export type IDefaultGameState = IGameState<
+  IPlayerPrivateData,
+  IPlayerPublicData
+>

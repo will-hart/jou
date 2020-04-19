@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { IGameState, IPlayerPublicData } from '@jou/common'
+import { IDefaultGameState, IPlayerPublicData } from '@jou/common'
 
 interface PlayerListProps {
-  players: IGameState['public']
+  players: IDefaultGameState['public']
 }
 
 interface PlayerListItemProps {

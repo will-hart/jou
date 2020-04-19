@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io'
-import { IGameState } from '../commonTypes'
+import { IDefaultGameState } from '../commonTypes'
 
 /**
  * Default check for whether the player can play the given card. By default checks
@@ -10,7 +10,7 @@ import { IGameState } from '../commonTypes'
  * @param cardId
  */
 export const canPlayCard = (
-  G: IGameState,
+  G: IDefaultGameState,
   ctx: Ctx,
   cardId: string
 ): boolean => {
@@ -27,9 +27,17 @@ export const canPlayCard = (
  * Plays the given card ID without applying any side effects
  */
 export const playCard = (
-  canPlayCardChecker?: (G: IGameState, ctx: Ctx, cardId: string) => boolean,
-  sideEffectHandler?: (G: IGameState, ctx: Ctx, cardId: string) => boolean
-) => (G: IGameState, ctx: Ctx, cardId: string) => {
+  canPlayCardChecker?: (
+    G: IDefaultGameState,
+    ctx: Ctx,
+    cardId: string
+  ) => boolean,
+  sideEffectHandler?: (
+    G: IDefaultGameState,
+    ctx: Ctx,
+    cardId: string
+  ) => boolean
+) => (G: IDefaultGameState, ctx: Ctx, cardId: string) => {
   if (canPlayCardChecker && !canPlayCardChecker(G, ctx, cardId)) return
 
   // remove the card from the player

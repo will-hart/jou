@@ -1,4 +1,4 @@
-import { IGameState } from '@jou/common/src/commonTypes'
+import { IDefaultGameState } from '@jou/common/src/commonTypes'
 
 import { LayoutSection } from './'
 
@@ -18,7 +18,7 @@ export interface ICardLocationData {
  * @param cardId
  */
 export const getCardLocationData = (
-  G: IGameState,
+  G: IDefaultGameState,
   playerId: string,
   cardId: string
 ): ICardLocationData => {

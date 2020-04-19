@@ -4,7 +4,7 @@ import * as React from 'react'
 // import useMeasure, { RectReadOnly } from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
-import { IGameState } from '@jou/common'
+import { IDefaultGameState } from '@jou/common'
 // import { LayoutSection, getCardLocationData } from '@jou/demo'
 
 // import PlayerList from '../../game/PlayerList'
@@ -14,7 +14,7 @@ import { IGameState } from '@jou/common'
 // import { DEMO_BASE_CARD_PATH } from '../../constants'
 
 interface BoardProps {
-  G: IGameState
+  G: IDefaultGameState
   ctx: Ctx
   moves: {
     drawToFullHand: () => void

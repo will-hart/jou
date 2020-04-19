@@ -1,8 +1,8 @@
-import { IGameState } from '@jou/common'
+import { IDefaultGameState } from '@jou/common'
 import { Ctx } from 'boardgame.io'
 
 export const applyDemoCardSideEffects = (
-  G: IGameState,
+  G: IDefaultGameState,
   ctx: Ctx,
   cardId: string
 ): boolean => {
@@ -30,7 +30,7 @@ export const applyDemoCardSideEffects = (
   G.secret.discardCardIds.push(matchingCard)
 }
 
-export const calculateScores = (G: IGameState) => {
+export const calculateScores = (G: IDefaultGameState) => {
   Object.keys(G.players).forEach((playerId) => {
     const colourCounts = G.public[playerId].playedCards.reduce(
       (acc: { [key: string]: number }, cardId: string) => {

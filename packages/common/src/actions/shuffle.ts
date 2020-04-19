@@ -1,8 +1,8 @@
-import { IGameState } from '../commonTypes'
+import { IDefaultGameState } from '../commonTypes'
 import { shuffleArray } from '../utilities'
 import { Ctx } from 'boardgame.io'
 
-export const shuffleDiscardIntoDraw = (G: IGameState) => {
+export const shuffleDiscardIntoDraw = (G: IDefaultGameState) => {
   G.secret.drawCardIds = shuffleArray([
     ...G.secret.drawCardIds,
     ...G.secret.discardCardIds,
@@ -11,7 +11,7 @@ export const shuffleDiscardIntoDraw = (G: IGameState) => {
 }
 
 export const shufflePersonalDiscardIntoPersonalDraw = (
-  G: IGameState,
+  G: IDefaultGameState,
   ctx: Ctx,
   playerId: string
 ) => {
@@ -23,7 +23,7 @@ export const shufflePersonalDiscardIntoPersonalDraw = (
   G.players[playerId].personalDiscard = []
 }
 
-export const moveAvailableIntoDiscard = (G: IGameState) => {
+export const moveAvailableIntoDiscard = (G: IDefaultGameState) => {
   G.secret.discardCardIds = [...G.secret.discardCardIds, ...G.availableCards]
   G.availableCards = []
 }
@@ -33,7 +33,7 @@ export const moveAvailableIntoDiscard = (G: IGameState) => {
  *
  * @param G The game state
  */
-export const moveAllPlayedToDiscard = (G: IGameState) => {
+export const moveAllPlayedToDiscard = (G: IDefaultGameState) => {
   Object.values(G.public).forEach((pub) => {
     G.secret.discardCardIds = [...G.secret.discardCardIds, ...pub.playedCards]
     pub.playedCards = []
@@ -48,7 +48,7 @@ export const moveAllPlayedToDiscard = (G: IGameState) => {
  * @param G
  */
 export const movePlayerPlayedToPersonalDiscardServerOnly = (
-  G: IGameState,
+  G: IDefaultGameState,
   playerId: string
 ) => {
   G.players[playerId].personalDiscard = [
@@ -65,6 +65,6 @@ export const movePlayerPlayedToPersonalDiscardServerOnly = (
  * @param G
  * @param ctx
  */
-export const movePlayedtoPersonalDiscard = (G: IGameState, ctx: Ctx) => {
+export const movePlayedtoPersonalDiscard = (G: IDefaultGameState, ctx: Ctx) => {
   movePlayerPlayedToPersonalDiscardServerOnly(G, ctx.currentPlayer)
 }

@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io'
-import { IGameState } from '../commonTypes'
+import { IDefaultGameState } from '../commonTypes'
 import {
   shuffleDiscardIntoDraw,
   shufflePersonalDiscardIntoPersonalDraw,
@@ -8,11 +8,13 @@ import {
 /**
  * Draws a card from a deck.
  *
+ * TODO: make this more generic so we can draw from any deck to any other deck
+ *
  * @param G
  * @param playerId
  */
 const _drawCardToPlayerHand = (
-  G: IGameState,
+  G: IDefaultGameState,
   playerId: string,
   usePrivate = false
 ) => {
@@ -39,18 +41,18 @@ const _drawCardToPlayerHand = (
   G.public[playerId].handSize++
 }
 
-export const drawCard = (G: IGameState, ctx: Ctx) => {
+export const drawCard = (G: IDefaultGameState, ctx: Ctx) => {
   const playerId = ctx.currentPlayer
   _drawCardToPlayerHand(G, playerId, false)
 }
 
-export const drawCardFromPersonalDeck = (G: IGameState, ctx: Ctx) => {
+export const drawCardFromPersonalDeck = (G: IDefaultGameState, ctx: Ctx) => {
   if (!G.secret.rules.usePersonalDeck) return
   const playerId = ctx.currentPlayer
   _drawCardToPlayerHand(G, playerId, true)
 }
 
-export const drawToFullHand = (G: IGameState, ctx: Ctx) => {
+export const drawToFullHand = (G: IDefaultGameState, ctx: Ctx) => {
   while (
     G.public[ctx.currentPlayer].handSize <
     G.players[ctx.currentPlayer].maxHandSize
@@ -59,7 +61,10 @@ export const drawToFullHand = (G: IGameState, ctx: Ctx) => {
   }
 }
 
-export const drawToFullHandFromPersonalDeck = (G: IGameState, ctx: Ctx) => {
+export const drawToFullHandFromPersonalDeck = (
+  G: IDefaultGameState,
+  ctx: Ctx
+) => {
   if (!G.secret.rules.usePersonalDeck) return
   while (
     G.public[ctx.currentPlayer].handSize <
@@ -69,7 +74,7 @@ export const drawToFullHandFromPersonalDeck = (G: IGameState, ctx: Ctx) => {
   }
 }
 
-export const drawCardToAvailableCards = (G: IGameState) => {
+export const drawCardToAvailableCards = (G: IDefaultGameState) => {
   if (!G.availableCards) return
   if (G.availableCards.length >= G.secret.rules.availableCardSize) return
 
@@ -87,7 +92,7 @@ export const drawCardToAvailableCards = (G: IGameState) => {
 }
 
 const _claimAvailableCard = (
-  G: IGameState,
+  G: IDefaultGameState,
   playerId: string,
   cardId: string
 ) => {
@@ -101,7 +106,7 @@ const _claimAvailableCard = (
 }
 
 export const claimAvailableCardToPersonalDiscard = (
-  G: IGameState,
+  G: IDefaultGameState,
   ctx: Ctx,
   cardId: string
 ) => {
@@ -117,7 +122,7 @@ export const claimAvailableCardToPersonalDiscard = (
 }
 
 export const claimAvailableCardToPersonalDraw = (
-  G: IGameState,
+  G: IDefaultGameState,
   ctx: Ctx,
   cardId: string
 ) => {
