@@ -3,12 +3,12 @@ import { Client } from 'boardgame.io/react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { SocketIO } from 'boardgame.io/multiplayer'
-// import { Local } from 'boardgame.io/multiplayer'
 
-import DemoGame from '@jou/demo'
-import ByTheSwordGame, { LD46_GAME_ID } from '@jou/ld46'
+// TODO load the correct board for the correct game
+// import DemoGame from '@jou/demo'
+import ByTheSwordGame /*, { LD46_GAME_ID }*/ from '@jou/ld46'
 
-import { Board as DemoBoard } from '../../../components/DemoGame'
+// import { Board as DemoBoard } from '../../../components/DemoGame'
 import { Board as ByTheSwordBoard } from '../../../components/LD46'
 
 import {
@@ -19,10 +19,9 @@ import { Spinner } from '../../../components'
 import { BASE_URL } from '../../../constants'
 
 const GameClient = Client({
-  game: DemoGame,
-  board: Board,
+  game: ByTheSwordGame,
+  board: ByTheSwordBoard,
   multiplayer: SocketIO({ server: BASE_URL }),
-  // multiplayer: Local(),
 })
 
 const GamePage = () => {
@@ -35,16 +34,19 @@ const GamePage = () => {
   if (!playerId || !gameName || !roomId || !creds) return <Spinner />
 
   console.log(`Assuming player ID '${playerId}'`)
+
   return (
     <>
       <Head>
         <title>Jou Demo Game</title>
       </Head>
-      <GameClient
-        playerID={`${playerId}`}
-        gameID={roomId}
-        credentials={creds.credential}
-      />
+      {GameClient && (
+        <GameClient
+          playerID={`${playerId}`}
+          gameID={roomId}
+          credentials={creds.credential}
+        />
+      )}
     </>
   )
 }

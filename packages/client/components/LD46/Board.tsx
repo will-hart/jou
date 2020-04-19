@@ -1,7 +1,7 @@
 import * as React from 'react'
-// import { useState, useEffect, useCallback } from 'react'
-// import { ResizeObserver } from '@juggle/resize-observer'
-// import useMeasure, { RectReadOnly } from 'react-use-measure'
+import { useState, useEffect } from 'react'
+import { ResizeObserver } from '@juggle/resize-observer'
+import useMeasure from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
 import { ByTheSwordState } from '@jou/ld46'
@@ -32,7 +32,30 @@ interface BoardProps {
 }
 
 const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
-  return <div>Not complete</div>
+  // keep me/opponent Ids in state
+  const [meId, setMeId] = useState<string>(null)
+
+  // effect that updates my id / opponent id on changes
+  useEffect(() => {
+    if (!state) return
+
+    setMeId(Object.keys(state?.players)?.[0])
+  }, [setMeId, state, meId])
+
+  // measure the board so we can scale the layout to fit
+  const [ref, bounds] = useMeasure({
+    debounce: 10,
+    polyfill: ResizeObserver,
+  })
+
+  return (
+    <div
+      ref={ref}
+      className="flex-grow fixed top-0 left-0 w-full h-screen select-none"
+    >
+      {meId} - {JSON.stringify(bounds)}
+    </div>
+  )
 }
 
 export default Board
