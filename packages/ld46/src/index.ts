@@ -126,3 +126,4 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
 export default ByTheSwordGame
 // export * from './layout'
 export * from './constants'
+export * from './state'

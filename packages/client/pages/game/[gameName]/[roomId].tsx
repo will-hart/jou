@@ -6,7 +6,11 @@ import { SocketIO } from 'boardgame.io/multiplayer'
 // import { Local } from 'boardgame.io/multiplayer'
 
 import DemoGame from '@jou/demo'
-import { Board } from '../../../components/DemoGame'
+import ByTheSwordGame, { LD46_GAME_ID } from '@jou/ld46'
+
+import { Board as DemoBoard } from '../../../components/DemoGame'
+import { Board as ByTheSwordBoard } from '../../../components/LD46'
+
 import {
   validateRouterArg,
   getPlayerCredentialsForRoom,

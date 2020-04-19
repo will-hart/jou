@@ -4,7 +4,7 @@ import * as React from 'react'
 // import useMeasure, { RectReadOnly } from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
-import { IDefaultGameState } from '@jou/common'
+import { ByTheSwordState } from '@jou/ld46'
 // import { LayoutSection, getCardLocationData } from '@jou/demo'
 
 // import PlayerList from '../../game/PlayerList'
@@ -14,11 +14,20 @@ import { IDefaultGameState } from '@jou/common'
 // import { DEMO_BASE_CARD_PATH } from '../../constants'
 
 interface BoardProps {
-  G: IDefaultGameState
+  G: ByTheSwordState
   ctx: Ctx
   moves: {
-    drawToFullHand: () => void
-    playCard: (cardId) => void
+    draftFighter: (G: ByTheSwordState, ctx: Ctx, fighterId: string) => void
+    draftCreature: (G: ByTheSwordState, ctx: Ctx, creatureId?: string) => void
+    discardAndRedraw: (G: ByTheSwordState, ctx: Ctx, cardId?: string) => void
+    pass: (G: ByTheSwordState, ctx: Ctx) => void
+    playCardWithTarget: (
+      G: ByTheSwordState,
+      ctx: Ctx,
+      cardId: string,
+      targetId?: string,
+      targetIsCreature?: boolean
+    ) => string
   }
 }
 
