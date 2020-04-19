@@ -9,15 +9,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
+    "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/ld46 build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
     "build:client": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/client build",
     "build:server": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/server build",
     "heroku-postbuild": "yarn build:server",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "dev": "concurrently -n common,demo,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server dev\"",
-    "dev:client": "concurrently -n common,demo,client \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/client dev --port $PORT\"",
-    "dev:server": "concurrently -n common,demo,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/server dev\"",
+    "dev": "concurrently -n common,demo,ld46,client,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/ld46 dev\" \"yarn workspace @jou/client dev\" \"yarn workspace @jou/server dev\"",
+    "dev:client": "concurrently -n common,demo,ld46,client \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/ld46 dev\" \"yarn workspace @jou/client dev --port $PORT\"",
+    "dev:server": "concurrently -n common,demo,ld46,server \"yarn workspace @jou/common dev\" \"yarn workspace @jou/demo dev\" \"yarn workspace @jou/ld46 dev\" \"yarn workspace @jou/server dev\"",
     "start:server": "yarn build:server && yarn workspace @jou/server start",
     "start": "yarn workspace @jou/server start"
   },
