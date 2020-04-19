@@ -14,7 +14,13 @@ export interface IPlayerPublic extends IPlayerPublicData {
   id: number
   fighters: string[]
   passed: boolean
-  playedCardPayloads: { [key: string]: { id: string; isCreature: boolean } }
+}
+
+export interface ITargetedCard {
+  playedById: string
+  targetedAtId: string
+  targetIsCreature: boolean // false implies player
+  cardId: string
 }
 
 export interface ByTheSwordState
@@ -30,9 +36,8 @@ export interface ByTheSwordState
   creatureDeck: { [key: string]: ICardDefinition }
 
   currentCreatures: string[]
-  public: {
-    [key: string]: IPlayerPublic
-  }
+
+  targetedCards: ITargetedCard[]
 }
 
 export const stateFactory = (
@@ -88,6 +93,8 @@ export const stateFactory = (
 
     currentCreatures: [],
 
+    targetedCards: [],
+
     public: Array(numPlayers)
       .fill(null)
       .reduce((acc, _, idx) => {
@@ -99,7 +106,6 @@ export const stateFactory = (
           fighters: [],
           passed: false,
           handSize: 0,
-          playedCardPayloads: {},
           playedCards: [],
         }
 

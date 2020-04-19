@@ -91,7 +91,7 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
       onBegin: resolveCombat,
       onEnd: (G: ByTheSwordState) => {
         // clear all the card targets
-        Object.values(G.public).forEach((p) => (p.playedCardPayloads = {}))
+        G.targetedCards = []
       },
     },
   },

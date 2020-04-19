@@ -183,8 +183,10 @@ export const playCardWithTarget = (
     return INVALID_MOVE
   }
 
-  G.public[ctx.currentPlayer].playedCardPayloads[cardId] = {
-    id: targetId,
-    isCreature: targetIsCreature,
-  }
+  G.targetedCards.push({
+    cardId,
+    playedById: ctx.currentPlayer,
+    targetIsCreature,
+    targetedAtId: targetId,
+  })
 }

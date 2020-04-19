@@ -132,3 +132,4 @@ I want some of these mechanisms:
 - can play one card per fighter per turn
 - players draft monster cards
 - if a player kills a monster solo they get 2x the Popularity
+- excitement --> rename to popularity
