@@ -10,7 +10,7 @@ import {
   pass,
   playCardWithTarget,
 } from './moves'
-import { actionDeck, creatureDeck, fighterDeck } from './cardDefinitions'
+import { actionDeck, creatureDeck, characterDeck } from './cardDefinitions'
 import {
   SINGLE_PLAYER_WIN_SCORE,
   TEAM_WIN_SCORE,
@@ -19,9 +19,8 @@ import {
 import { resolveCombat } from './combat'
 
 const ByTheSwordGame: Game<ByTheSwordState> = {
-  setup: (ctx: Ctx, setupData: unknown): ByTheSwordState => {
-    console.log(ctx, setupData)
-    return stateFactory(actionDeck, creatureDeck, fighterDeck, 2)
+  setup: (): ByTheSwordState => {
+    return stateFactory(actionDeck, creatureDeck, characterDeck, 2)
   },
 
   name: LD46_GAME_ID,
@@ -124,6 +123,7 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
 }
 
 export default ByTheSwordGame
-// export * from './layout'
+
+export * from './layout'
 export * from './constants'
 export * from './state'

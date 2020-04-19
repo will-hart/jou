@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { ResizeObserver } from '@juggle/resize-observer'
-import useMeasure from 'react-use-measure'
+import useMeasure, { RectReadOnly } from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
 import { ByTheSwordState } from '@jou/ld46'
+import DraftCard from './DraftCard'
 // import { LayoutSection, getCardLocationData } from '@jou/demo'
 
 // import PlayerList from '../../game/PlayerList'
@@ -16,14 +17,13 @@ import { ByTheSwordState } from '@jou/ld46'
 interface BoardProps {
   G: ByTheSwordState
   ctx: Ctx
+  gameMetadata: { players: { [key: string]: { id: number; name: string } } }
   moves: {
-    draftFighter: (G: ByTheSwordState, ctx: Ctx, fighterId: string) => void
-    draftCreature: (G: ByTheSwordState, ctx: Ctx, creatureId?: string) => void
-    discardAndRedraw: (G: ByTheSwordState, ctx: Ctx, cardId?: string) => void
-    pass: (G: ByTheSwordState, ctx: Ctx) => void
+    draftFighter: (fighterId: string) => void
+    draftCreature: (creatureId?: string) => void
+    discardAndRedraw: (cardId?: string) => void
+    pass: () => void
     playCardWithTarget: (
-      G: ByTheSwordState,
-      ctx: Ctx,
       cardId: string,
       targetId?: string,
       targetIsCreature?: boolean
@@ -31,9 +31,56 @@ interface BoardProps {
   }
 }
 
-const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
+const getBoardContext = (
+  state: ByTheSwordState,
+  ctx: Ctx,
+  meId: string,
+  moves: BoardProps['moves']
+) => {
+  const phase = ctx.phase
+  const isMyTurn = ctx.currentPlayer === meId
+
+  switch (phase) {
+    case 'initialFighterDraft':
+    case 'fighterDraft':
+      return (
+        <DraftCard
+          cards={state.availableCharacters.map(
+            (cId) => state.characterDeck[cId]
+          )}
+          helpText={
+            <div className="text-white">
+              <h1>
+                {isMyTurn ? (
+                  <span>
+                    Select a {phase.startsWith('initial') ? 'starting' : ''}{' '}
+                    Gladiator
+                  </span>
+                ) : (
+                  <span>Waiting for players...</span>
+                )}
+              </h1>
+              {!phase.startsWith('initial') && <h2>Or click here to pass</h2>}
+            </div>
+          }
+          onSelect={
+            isMyTurn
+              ? (card) => {
+                  moves.draftFighter(card.id)
+                }
+              : undefined
+          }
+        />
+      )
+    default:
+      return <p>Unknown phase</p>
+  }
+}
+
+const Board = ({ G: state, ctx: context, moves, gameMetadata }: BoardProps) => {
   // keep me/opponent Ids in state
   const [meId, setMeId] = useState<string>(null)
+  console.log(gameMetadata)
 
   // effect that updates my id / opponent id on changes
   useEffect(() => {
@@ -53,7 +100,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
       ref={ref}
       className="flex-grow fixed top-0 left-0 w-full h-screen select-none"
     >
-      {meId} - {JSON.stringify(bounds)}
+      {getBoardContext(state, context, meId, moves)}
     </div>
   )
 }
