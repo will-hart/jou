@@ -40,7 +40,7 @@ export const draftFighter = (
     ? 0
     : parseInt(
         fighter.effects
-          .find((e) => e.name === EffectType.PURCHASE_EXCITEMENT)
+          .find((e) => e.name === EffectType.PURCHASE_COST)
           .value.toString(),
         10
       )
@@ -114,7 +114,7 @@ export const draftCreature = (
   const creature = G.creatureDeck[creatureId]
   const cost = parseInt(
     creature.effects
-      .find((e) => e.name === EffectType.PURCHASE_EXCITEMENT)
+      .find((e) => e.name === EffectType.PURCHASE_COST)
       .value.toString(),
     10
   )

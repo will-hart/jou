@@ -44,14 +44,14 @@ const DemoGameRules = () => {
         <div className="mt-4">
           Players draft a pool of warriors, then &quot;purchase&quot; creatures
           to fight in the arena by playing action cards. Players aim to increase
-          the <em>excitement</em> in the arena by playing specific cards and
-          defeating creatures. Players each have their own popularity level and
-          the arena also has a popularity level.
+          the <em>popularity</em> of your warriors in the arena by playing
+          specific cards and defeating creatures. Players each have their own
+          popularity level and the arena also has a popularity level.
         </div>
 
         <h3 className="mt-4">Winning and losing</h3>
         <div className="mt-4">
-          If the arena excitement level reaches 50, then the player&apos;s are
+          If the arena popularity level reaches 50, then the player&apos;s are
           pardoned by the Emperor and win. If one player is remaining, and their
           individual popularity is above 30, they win and the other players
           lose. If all players are eliminated before popularity reaches the

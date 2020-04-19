@@ -19,16 +19,16 @@ export const actionDeck: Deck = {
       id: `action_1_${idx}`,
       affinity: 'attack',
       imagePath: getImagePath('actions_01'),
-      effects: [{ name: EffectType.PURCHASE_EXCITEMENT, value: 1 }],
+      effects: [{ name: EffectType.PURCHASE_COST, value: 1 }],
     })),
     ...generateCards(10, (idx) => ({
       id: `action_2_${idx}`,
       affinity: 'attack',
       imagePath: getImagePath('actions_02'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 2 },
-        { name: EffectType.WARRIOR_CP, value: 2 },
-        { name: EffectType.ADD_EXCITEMENT, value: 1 },
+        { name: EffectType.PURCHASE_COST, value: 2 },
+        { name: EffectType.OWN_CP, value: 2 },
+        { name: EffectType.ADD_POPULARITY, value: 1 },
       ],
     })),
     ...generateCards(5, (idx) => ({
@@ -36,10 +36,10 @@ export const actionDeck: Deck = {
       affinity: 'attack',
       imagePath: getImagePath('actions_03'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 3 },
-        { name: EffectType.WARRIOR_CP, value: 3 },
+        { name: EffectType.PURCHASE_COST, value: 3 },
+        { name: EffectType.OWN_CP, value: 3 },
         { name: EffectType.TARGET_SELF, value: null },
-        { name: EffectType.ADD_EXCITEMENT, value: 1 },
+        { name: EffectType.ADD_POPULARITY, value: 1 },
       ],
     })),
     ...generateCards(2, (idx) => ({
@@ -47,9 +47,9 @@ export const actionDeck: Deck = {
       affinity: 'redirect',
       imagePath: getImagePath('actions_04'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 2 },
+        { name: EffectType.PURCHASE_COST, value: 2 },
         { name: EffectType.TARGET_SELECTED, value: null },
-        { name: EffectType.ADD_EXCITEMENT, value: 1 },
+        { name: EffectType.ADD_POPULARITY, value: 1 },
       ],
     })),
     ...generateCards(2, (idx) => ({
@@ -57,7 +57,7 @@ export const actionDeck: Deck = {
       affinity: 'redirect',
       imagePath: getImagePath('actions_05'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 1 },
+        { name: EffectType.PURCHASE_COST, value: 1 },
         { name: EffectType.DISABLE_SELECTED, value: null },
       ],
     })),
@@ -66,10 +66,10 @@ export const actionDeck: Deck = {
       affinity: 'attack',
       imagePath: getImagePath('actions_06'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 4 },
-        { name: EffectType.WARRIOR_CP, value: 3 },
+        { name: EffectType.PURCHASE_COST, value: 4 },
+        { name: EffectType.OWN_CP, value: 3 },
         { name: EffectType.DISABLE_SELF, value: 1 },
-        { name: EffectType.ADD_EXCITEMENT, value: 3 },
+        { name: EffectType.ADD_POPULARITY, value: 3 },
       ],
     })),
     ...generateCards(3, (idx) => ({
@@ -77,8 +77,8 @@ export const actionDeck: Deck = {
       affinity: 'effect',
       imagePath: getImagePath('actions_07'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 2 },
-        { name: EffectType.ADD_EXCITEMENT, value: 5 },
+        { name: EffectType.PURCHASE_COST, value: 2 },
+        { name: EffectType.ADD_POPULARITY, value: 5 },
       ],
     })),
     ...generateCards(1, (idx) => ({
@@ -86,9 +86,9 @@ export const actionDeck: Deck = {
       affinity: 'attack',
       imagePath: getImagePath('actions_08'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 5 },
-        { name: EffectType.ADD_EXCITEMENT, value: 4 },
-        { name: EffectType.WARRIOR_CP, value: 5 },
+        { name: EffectType.PURCHASE_COST, value: 5 },
+        { name: EffectType.ADD_POPULARITY, value: 4 },
+        { name: EffectType.OWN_CP, value: 5 },
       ],
     })),
     ...generateCards(3, (idx) => ({
@@ -96,9 +96,9 @@ export const actionDeck: Deck = {
       affinity: 'redirect',
       imagePath: getImagePath('actions_09'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 4 },
-        { name: EffectType.ADD_EXCITEMENT, value: 2 },
-        { name: EffectType.CREATURE_CP, value: -4 },
+        { name: EffectType.PURCHASE_COST, value: 4 },
+        { name: EffectType.ADD_POPULARITY, value: 2 },
+        { name: EffectType.TARGET_CP, value: -4 },
       ],
     })),
     ...generateCards(3, (idx) => ({
@@ -106,9 +106,19 @@ export const actionDeck: Deck = {
       affinity: 'redirect',
       imagePath: getImagePath('actions_10'),
       effects: [
-        { name: EffectType.PURCHASE_EXCITEMENT, value: 3 },
-        { name: EffectType.ADD_EXCITEMENT, value: 1 },
+        { name: EffectType.PURCHASE_COST, value: 3 },
+        { name: EffectType.ADD_POPULARITY, value: 1 },
         { name: EffectType.SLOW_TARGET, value: null },
+      ],
+    })),
+    ...generateCards(5, (idx) => ({
+      id: `action_11_${idx}`,
+      affinity: 'sacrifice',
+      imagePath: getImagePath('actions_11'),
+      effects: [
+        { name: EffectType.PURCHASE_COST, value: 4 },
+        { name: EffectType.DISABLE_SELECTED, value: 1 },
+        { name: EffectType.SACRIFICE_SELF, value: null },
       ],
     })),
   ],
@@ -139,8 +149,8 @@ const getCharacterCard = (
   imagePath: getImagePath(`characters_${id.toString().padStart(2, '0')}`),
   effects: [
     { name: EffectType.LEVEL, value: level },
-    { name: EffectType.PURCHASE_EXCITEMENT, value: cost },
-    { name: EffectType.WARRIOR_CP, value: combat },
+    { name: EffectType.PURCHASE_COST, value: cost },
+    { name: EffectType.OWN_CP, value: combat },
     ...extraEffects,
   ],
 })
@@ -163,7 +173,7 @@ export const fighterDeck: Deck = {
       .fill(null)
       .map((_, idx) =>
         getCharacterCard(idx + 13, 2, 5, 4, [
-          { name: EffectType.CREATURE_CP, value: -1 },
+          { name: EffectType.TARGET_CP, value: -1 },
         ])
       ),
     ...Array(2)
@@ -199,21 +209,21 @@ export const fighterDeck: Deck = {
       .fill(null)
       .map((_, idx) =>
         getCharacterCard(idx + 26, 3, 7, 9, [
-          { name: EffectType.CREATURE_CP, value: -3 },
+          { name: EffectType.TARGET_CP, value: -3 },
         ])
       ),
     getCharacterCard(28, 3, 7, 7),
     getCharacterCard(29, 3, 6, 8), // TODO: implement bonus when fighting with #30
     getCharacterCard(30, 3, 6, 8, [
       {
-        name: EffectType.CREATURE_CP,
+        name: EffectType.TARGET_CP,
         value: -3,
       },
     ]), // TODO: implement bonus when fighting with #29
     getCharacterCard(31, 3, 7, 7),
     getCharacterCard(32, 3, 7, 8, [
       {
-        name: EffectType.CREATURE_CP,
+        name: EffectType.TARGET_CP,
         value: -3,
       },
     ]),
@@ -222,12 +232,12 @@ export const fighterDeck: Deck = {
       .fill(null)
       .map((_, idx) =>
         getCharacterCard(idx + 34, 4, 8, 10, [
-          { name: EffectType.CREATURE_CP, value: -5 },
+          { name: EffectType.TARGET_CP, value: -5 },
         ])
       ), // TODO implement bonus when fighting with mirmillo
     getCharacterCard(37, 4, 8, 8, [
       {
-        name: EffectType.CREATURE_CP,
+        name: EffectType.TARGET_CP,
         value: -3,
       },
     ]),
@@ -235,16 +245,16 @@ export const fighterDeck: Deck = {
       .fill(null)
       .map((_, idx) =>
         getCharacterCard(idx + 38, 4, 9, 10, [
-          { name: EffectType.CREATURE_CP, value: -5 },
+          { name: EffectType.TARGET_CP, value: -5 },
           { name: EffectType.ARMOURED, value: null },
         ])
       ),
     getCharacterCard(40, 4, 9, 11, [
-      { name: EffectType.CREATURE_CP, value: -6 },
+      { name: EffectType.TARGET_CP, value: -6 },
       { name: EffectType.ARMOURED, value: null },
     ]),
     getCharacterCard(41, 5, 10, 14, [
-      { name: EffectType.CREATURE_CP, value: -7 },
+      { name: EffectType.TARGET_CP, value: -7 },
       { name: EffectType.ARMOURED, value: null },
     ]),
     ...Array(4)
@@ -258,11 +268,11 @@ export const fighterDeck: Deck = {
       .fill(null)
       .map((_, idx) =>
         getCharacterCard(idx + 46, 6, 12, 14, [
-          { name: EffectType.CREATURE_CP, value: -3 },
+          { name: EffectType.TARGET_CP, value: -3 },
         ])
       ),
     getCharacterCard(48, 6, 12, 15, [
-      { name: EffectType.ADD_EXCITEMENT, value: 2 },
+      { name: EffectType.ADD_POPULARITY, value: 2 },
       { name: EffectType.BONUS_VS_PLAYERS, value: 4 },
     ]),
   ],
