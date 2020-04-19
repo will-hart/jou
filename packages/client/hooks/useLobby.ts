@@ -1,6 +1,6 @@
 import ky from 'ky-universal'
 import { useState, useEffect, useCallback } from 'react'
-import { storePlayerCredentials } from '../utilities'
+import GAME_SETTINGS from '../components/GameDefinitions'
 
 export interface Player {
   id: number
@@ -37,7 +37,7 @@ const useLobby = (
 
     const { gameID } = await ky
       .post(`${url}/games/${gameName}/create`, {
-        json: { numPlayers: 2 },
+        json: { numPlayers: GAME_SETTINGS[gameName].maxPlayers },
       })
       .json()
 

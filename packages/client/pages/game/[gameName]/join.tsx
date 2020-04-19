@@ -10,6 +10,7 @@ import Head from 'next/head'
 import useGameLobby from '../../../hooks/useGameLobby'
 import { Room } from '../../../hooks/useLobby'
 import { BASE_URL } from '../../../constants'
+import GAME_SETTINGS from '../../../components/GameDefinitions'
 
 const getLobby = (
   room: Room | undefined,
@@ -18,7 +19,9 @@ const getLobby = (
   slot: number,
   push: (url: string) => Promise<boolean>
 ) => {
-  const isReady = room && !room.players.some((p) => !p.name)
+  const gameSettings = GAME_SETTINGS[gameName]
+  const isReady =
+    room && room.players.filter((p) => !p.name).length > gameSettings.minPlayers
 
   return (
     <>
