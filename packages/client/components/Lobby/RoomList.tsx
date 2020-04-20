@@ -36,7 +36,11 @@ const RoomList = ({ loading, rooms }: RoomListProps) => {
                   {room.players.filter((p) => !!p.name).length} /{' '}
                   {room.players.length}
                 </td>
-                <td>JOIN</td>
+                <td>
+                  <Link href={`/game/by_the_sword/join?roomId=${room.gameID}`}>
+                    <a>JOIN</a>
+                  </Link>
+                </td>
               </tr>
             ))
           )}
