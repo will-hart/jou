@@ -31,7 +31,9 @@ const DraftFighters = ({
               <span>Waiting for players...</span>
             )}
           </h1>
-          {!phase.startsWith('initial') && <h2>Or click here to pass</h2>}
+          {!phase.startsWith('initial') && isMyTurn && (
+            <h2>Or click here to pass</h2>
+          )}
         </div>
       }
       onSelect={

@@ -7,6 +7,8 @@ import { Ctx } from 'boardgame.io'
 import { ByTheSwordState } from '@jou/ld46'
 import DraftFighters from './phases/DraftFighters'
 import DraftCreatures from './phases/DraftCreatures'
+import DiscardCard from './phases/DiscardCard'
+import Spinner from '../Spinner'
 
 export interface BoardProps {
   G: ByTheSwordState
@@ -48,6 +50,16 @@ const getBoardContext = (
 
     case 'draftCreatures':
       return <DraftCreatures isMyTurn={isMyTurn} moves={moves} state={state} />
+    case 'draftHand':
+      if (!state.players[meId]) return <Spinner />
+      return (
+        <DiscardCard
+          moves={moves}
+          playerId={meId}
+          state={state}
+          moveDone={!!state.public[meId]?.passed}
+        />
+      )
     default:
       return <p>Unknown phase</p>
   }

@@ -23,13 +23,15 @@ const DraftCreatures = ({ moves, isMyTurn, state }: DraftCreaturesProps) => {
               <span>Waiting for players...</span>
             )}
           </h1>
-          <h2>
-            Or{' '}
-            <button onClick={() => moves.pass()} className="text-green-300">
-              click here
-            </button>{' '}
-            to pass
-          </h2>
+          {isMyTurn && (
+            <h2>
+              Or{' '}
+              <button onClick={() => moves.pass()} className="text-green-300">
+                click here
+              </button>{' '}
+              to pass
+            </h2>
+          )}
         </div>
       }
       onSelect={

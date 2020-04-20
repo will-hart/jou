@@ -65,7 +65,31 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     draftHand: {
       next: 'playHand',
       turn: { activePlayers: ActivePlayers.ALL_ONCE },
-      moves: { discardAndRedraw },
+      moves: { discardAndRedraw: { move: discardAndRedraw, client: false } },
+      endIf: (G: ByTheSwordState) => {
+        // lots of double negation here.
+        // Basically we want to see if anybody still has a move
+        return !Object.values(G.public).some((pub) => {
+          return !pub.passed
+        })
+      },
+      onBegin: (G: ByTheSwordState, ctx: Ctx) => {
+        Object.keys(G.public).forEach((playerId) => {
+          const player = G.players[playerId]
+
+          // nothing to discard
+          if (player.handCardIds.length === 0) {
+            const pub = G.public[playerId]
+
+            // simulate the discard
+            discardAndRedraw(G, { ...ctx, currentPlayer: playerId })
+          }
+        })
+      },
+      onEnd: (G: ByTheSwordState) => {
+        // clear all the passed players
+        Object.values(G.public).forEach((p) => (p.passed = false))
+      },
     },
     playHand: {
       next: 'resolveHand',

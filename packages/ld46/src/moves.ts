@@ -159,6 +159,10 @@ export const discardAndRedraw = (
     G.secret.discardCardIds.push(cardId)
   }
 
+  // mark as done
+  G.public[ctx.currentPlayer].passed = true
+
+  // draw up to full
   drawToFullHand(G, ctx)
 }
 
