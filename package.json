@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "build": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/ld46 build && concurrently -n server,client \"yarn workspace @jou/server build\" \"yarn workspace @jou/client build\"",
-    "build:client": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/client build",
-    "build:server": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/server build",
+    "build:client": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/ld46 build && yarn workspace @jou/client build",
+    "build:server": "yarn workspace @jou/common build && yarn workspace @jou/demo build && yarn workspace @jou/ld46 build && yarn workspace @jou/server build",
     "heroku-postbuild": "yarn build:server",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
