@@ -5,9 +5,10 @@ import useMeasure from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
 import { ByTheSwordState } from '@jou/ld46'
-import DraftCard from './DraftCard'
+import DraftFighters from './phases/DraftFighters'
+import DraftCreatures from './phases/DraftCreatures'
 
-interface BoardProps {
+export interface BoardProps {
   G: ByTheSwordState
   ctx: Ctx
   gameMetadata: { players: { [key: string]: { id: number; name: string } } }
@@ -37,67 +38,16 @@ const getBoardContext = (
     case 'initialFighterDraft':
     case 'fighterDraft':
       return (
-        <DraftCard
-          cards={state.availableCharacters.map(
-            (cId) => state.characterDeck[cId]
-          )}
-          helpText={
-            <div className="text-white">
-              <h1>
-                {isMyTurn ? (
-                  <span>
-                    Select a {phase.startsWith('initial') ? 'starting' : ''}{' '}
-                    Gladiator
-                  </span>
-                ) : (
-                  <span>Waiting for players...</span>
-                )}
-              </h1>
-              {!phase.startsWith('initial') && <h2>Or click here to pass</h2>}
-            </div>
-          }
-          onSelect={
-            isMyTurn
-              ? (card) => {
-                  moves.draftFighter(card.id)
-                }
-              : undefined
-          }
+        <DraftFighters
+          isMyTurn={isMyTurn}
+          moves={moves}
+          phase={phase}
+          state={state}
         />
       )
 
     case 'draftCreatures':
-      return (
-        <DraftCard
-          landscape
-          cards={state.availableCreatures.map((cId) => state.creatureDeck[cId])}
-          helpText={
-            <div className="text-white">
-              <h1>
-                {isMyTurn ? (
-                  <span>Select a Creature to fight</span>
-                ) : (
-                  <span>Waiting for players...</span>
-                )}
-              </h1>
-              <h2>
-                Or{' '}
-                <button onClick={() => moves.pass()} className="text-green-300">
-                  click here
-                </button>{' '}
-                to pass
-              </h2>
-            </div>
-          }
-          onSelect={
-            isMyTurn
-              ? (card) => {
-                  moves.draftCreature(card.id)
-                }
-              : undefined
-          }
-        />
-      )
+      return <DraftCreatures isMyTurn={isMyTurn} moves={moves} state={state} />
     default:
       return <p>Unknown phase</p>
   }
