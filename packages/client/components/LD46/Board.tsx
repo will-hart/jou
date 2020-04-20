@@ -37,11 +37,12 @@ const getBoardContext = (
 
   switch (phase) {
     case 'initialFighterDraft':
-    case 'fighterDraft':
+    case 'draftFighters':
       return (
         <DraftFighters
           isMyTurn={isMyTurn}
           moves={moves}
+          meId={meId}
           phase={phase}
           state={state}
         />
@@ -56,6 +57,7 @@ const getBoardContext = (
           moves={moves}
           playerId={meId}
           state={state}
+          isMyTurn={isMyTurn}
           moveDone={!!state.public[meId]?.passed}
         />
       )

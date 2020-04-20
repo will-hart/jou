@@ -8,6 +8,7 @@ interface DraftCardProps {
   cards: ICardDefinition[]
   helpText?: React.ReactNode
   onSelect: (card: ICardDefinition) => void
+  sinkCards?: boolean
 }
 
 const DraftCard = ({
@@ -15,6 +16,7 @@ const DraftCard = ({
   helpText,
   landscape,
   onSelect,
+  sinkCards,
 }: DraftCardProps) => {
   const width = landscape === true ? 120 * CARD_ASPECT_RATIO : 120
   const height =
@@ -34,10 +36,10 @@ const DraftCard = ({
             onClick={onSelect}
             key={`draft_card_${card.id}`}
             style={{
-              transform: 'translateY(50%)',
+              transform: sinkCards ? 'translateY(50%)' : '',
             }}
             hoverStyle={{
-              transform: 'translateY(0%) scale(2.5)',
+              transform: 'translateY(-100%) scale(2.5)',
             }}
           />
         ))}

@@ -4,7 +4,7 @@ export const getEffect = (
   card: ICardDefinition,
   effect: string
 ): string | number | null => {
-  return card.effects.find((eff) => eff.name === effect)?.value || null
+  return card?.effects.find((eff) => eff.name === effect)?.value || null
 }
 
 export const getEffectInt = (card: ICardDefinition, effect: string): number => {

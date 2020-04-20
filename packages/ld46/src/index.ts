@@ -1,5 +1,5 @@
 import { Game, Ctx } from 'boardgame.io'
-import { PlayerView, ActivePlayers } from 'boardgame.io/core'
+import { PlayerView } from 'boardgame.io/core'
 
 import { ByTheSwordState, stateFactory } from './state'
 import {
@@ -37,8 +37,20 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     },
     draftFighters: {
       next: 'draftCreatures',
+      endIf: (G: ByTheSwordState) => {
+        // lots of double negation here.
+        // Basically we want to see if anybody still has a move
+        return !Object.values(G.public).some((pub) => {
+          return !pub.passed
+        })
+      },
+      onEnd: (G: ByTheSwordState) => {
+        // clear all the passed players
+        Object.values(G.public).forEach((p) => (p.passed = false))
+      },
       moves: {
         draftFighter,
+        pass,
       },
       turn: { moveLimit: 1 },
     },
@@ -64,8 +76,11 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     },
     draftHand: {
       next: 'playHand',
-      turn: { activePlayers: ActivePlayers.ALL_ONCE },
-      moves: { discardAndRedraw: { move: discardAndRedraw, client: false } },
+      turn: { moveLimit: 1 },
+      moves: {
+        discardAndRedraw: { move: discardAndRedraw, client: false },
+        pass,
+      },
       endIf: (G: ByTheSwordState) => {
         // lots of double negation here.
         // Basically we want to see if anybody still has a move
@@ -94,6 +109,14 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     playHand: {
       next: 'resolveHand',
       endIf: (G: ByTheSwordState) => {
+        console.log(
+          Object.values(G.public).some(
+            (pub) => pub.playedCards.length >= pub.fighters.length
+          ),
+          Object.values(G.public).some((pub) => pub.passed),
+          Object.values(G.players).some((priv) => priv.handCardIds.length === 0)
+        )
+
         // lots of double negation here.
         // Basically we want to see if anybody still has a move
         return !Object.keys(G.public).some((key) => {
@@ -109,7 +132,17 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
       },
       onEnd: (G: ByTheSwordState) => {
         // clear all the passed players
+        console.log('Exit playHand phase')
         Object.values(G.public).forEach((p) => (p.passed = false))
+
+        // discard all played cards
+        Object.values(G.public).forEach((pub) => {
+          G.secret.discardCardIds = [
+            ...G.secret.discardCardIds,
+            ...pub.playedCards,
+          ]
+          pub.playedCards = []
+        })
       },
       moves: {
         // one option is to pass
@@ -126,11 +159,14 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
       },
     },
     resolveHand: {
-      // next: '' <<- depends on the outcome of resolution
       onBegin: resolveCombat,
+      endIf: () => true,
+      next: 'draftFighters', // TODO: pick between draftCreature and play depending on whether creatures are alive
+
       onEnd: (G: ByTheSwordState) => {
         // clear all the card targets
         G.targetedCards = []
+        Object.values(G.public).forEach((pub) => (pub.passed = false))
       },
     },
   },
@@ -161,6 +197,7 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
 export default ByTheSwordGame
 
 export { CardAffinity } from './cardDefinitions'
-export * from './layout'
+export * from './combat'
 export * from './constants'
+export * from './layout'
 export * from './state'

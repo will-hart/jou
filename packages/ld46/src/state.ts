@@ -47,7 +47,7 @@ export const stateFactory = (
   numPlayers: number
 ): ByTheSwordState => {
   return {
-    arenaScore: 0,
+    arenaScore: 10,
     endMessage: null,
     isInitialDraft: true,
 
@@ -101,7 +101,7 @@ export const stateFactory = (
         const newPublicPlayer: IPlayerPublic = {
           id: idx,
           name: `Player ${idx}`,
-          score: 5,
+          score: 6,
           isAway: false,
           fighters: [],
           passed: false,

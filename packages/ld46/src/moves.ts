@@ -34,6 +34,19 @@ export const draftFighter = (
     return INVALID_MOVE
   }
 
+  if (ctx.phase.startsWith('initial') && !fighterId) {
+    console.warn(
+      `Player ${ctx.currentPlayer} attempted to pass in the initial draft`
+    )
+    return INVALID_MOVE
+  }
+
+  if (!fighterId) {
+    console.log('Player passed in fighter draft phase')
+    G.public[ctx.currentPlayer].passed = true
+    return
+  }
+
   const fighter = G.characterDeck[fighterId]
   const cost = G.isInitialDraft
     ? 0
@@ -120,7 +133,7 @@ export const draftCreature = (
 
   if (G.arenaScore < cost) {
     console.warn(
-      `Player ${ctx.currentPlayer} attempted to get character ${creatureId} for ${cost} but only has ${G.arenaScore}`
+      `Player ${ctx.currentPlayer} attempted to buy creature ${creatureId} for $${cost} but only has $${G.arenaScore}`
     )
     return INVALID_MOVE
   }
@@ -153,6 +166,7 @@ export const discardAndRedraw = (
 
     // discard the card
     player.handCardIds = player.handCardIds.filter((c) => c !== cardId)
+    G.public[ctx.currentPlayer].handSize--
 
     // add the card to the action discard pile
     G.secret.discardCardIds.push(cardId)
@@ -163,6 +177,8 @@ export const discardAndRedraw = (
 
   // draw up to full
   drawToFullHand(G, ctx)
+
+  ctx.events.endTurn()
 }
 
 // a NOP move, and NOPs all future moves for this player

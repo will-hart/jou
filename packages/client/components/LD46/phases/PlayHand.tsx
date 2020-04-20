@@ -1,12 +1,18 @@
 import * as React from 'react'
 import { ResizeObserver } from '@juggle/resize-observer'
-import { ByTheSwordState, CARD_ASPECT_RATIO } from '@jou/ld46'
+import {
+  ByTheSwordState,
+  CARD_ASPECT_RATIO,
+  resolveSingleCombat,
+} from '@jou/ld46'
 import useMeasure from 'react-use-measure'
 import { BoardProps } from '../Board'
 import StaticPlayingCard from '../StaticPlayingCard'
 import { useCallback, useState, useEffect } from 'react'
 import { ICardDefinition } from '@jou/common'
 import { CardPlayingState, getNextState } from './playHandHelpers'
+import CombatPowerIcon from '../icons/CombatPowerIcon'
+import CardHandIcon from '../icons/CardHandIcon'
 
 interface PlayHandProps {
   state: ByTheSwordState
@@ -133,33 +139,56 @@ const PlayHand = ({ isMyTurn, meId, moves, state }: PlayHandProps) => {
         </div>
       </div>
 
-      <div className="fixed top-0" style={{ left: '20%', height: '40%' }}>
+      <div className="fixed top-0 p-2" style={{ left: '20%', height: '40%' }}>
         {state.currentCreatures
           .map((id) => state.creatureDeck[id])
-          .map((card) => (
-            <StaticPlayingCard
-              key={`creature_card_${card.id}`}
-              card={card}
-              width={(CARD_ASPECT_RATIO * bounds.width) / 3.5}
-              height={bounds.width / 3.5}
-              style={
-                cardPlayingState === CardPlayingState.SelectingTarget
-                  ? { cursor: 'pointer' }
-                  : {}
-              }
-              hoverStyle={{
-                ...(cardPlayingState === CardPlayingState.SelectingTarget
-                  ? { cursor: 'pointer' }
-                  : {}),
-                transform: `scale(${450 / (bounds.width / 3.5)})`,
-              }}
-              onClick={
-                cardPlayingState === CardPlayingState.SelectingTarget
-                  ? () => onClickTarget(card)
-                  : undefined
-              }
-            />
-          ))}
+          .map((card) => {
+            const combat = resolveSingleCombat(state, card.id)
+            return (
+              <div key={`creature_card_${card.id}`}>
+                <div className="mt-2">
+                  <CardHandIcon />{' '}
+                  <span className="mr-3">
+                    {
+                      state.targetedCards.filter(
+                        (t) => t.targetedAtId === card.id
+                      ).length
+                    }
+                  </span>
+                  <CombatPowerIcon />
+                  <span
+                    className={
+                      combat.attackSucceeded ? 'text-green-600' : 'text-red-600'
+                    }
+                  >
+                    {combat?.attackersCP} / {combat?.defenderCP}
+                  </span>
+                </div>
+
+                <StaticPlayingCard
+                  card={card}
+                  width={(CARD_ASPECT_RATIO * bounds.width) / 4.5}
+                  height={bounds.width / 4.5}
+                  style={
+                    cardPlayingState === CardPlayingState.SelectingTarget
+                      ? { cursor: 'pointer' }
+                      : {}
+                  }
+                  hoverStyle={{
+                    ...(cardPlayingState === CardPlayingState.SelectingTarget
+                      ? { cursor: 'pointer' }
+                      : {}),
+                    transform: `translatey(100%) scale(2)`,
+                  }}
+                  onClick={
+                    cardPlayingState === CardPlayingState.SelectingTarget
+                      ? () => onClickTarget(card)
+                      : undefined
+                  }
+                />
+              </div>
+            )
+          })}
       </div>
       <h3
         className="fixed"

@@ -6,6 +6,7 @@ import { BoardProps } from '../Board'
 interface DiscardCardProps {
   state: ByTheSwordState
   playerId: string
+  isMyTurn: boolean
   moveDone?: boolean
   moves: BoardProps['moves']
 }
@@ -13,6 +14,7 @@ interface DiscardCardProps {
 const DiscardCard = ({
   moves,
   playerId,
+  isMyTurn,
   moveDone,
   state,
 }: DiscardCardProps) => {
@@ -29,22 +31,18 @@ const DiscardCard = ({
       helpText={
         <div className="text-white">
           <h1>
-            {moveDone ? (
+            {moveDone || !isMyTurn ? (
               <span>Waiting for players...</span>
             ) : (
-              <span>You may discard one card</span>
+              <span>
+                You may discard one card, or{' '}
+                <button onClick={() => moves.pass()} className="text-green-300">
+                  click here to skip
+                </button>{' '}
+              </span>
             )}
           </h1>
-          <h2>
-            Or{' '}
-            <button
-              onClick={() => moves.discardAndRedraw(null)}
-              className="text-green-300"
-            >
-              click here
-            </button>{' '}
-            to redraw without discarding a card
-          </h2>
+          <h2>Your hand will draw back up to 5 cards</h2>
         </div>
       }
       onSelect={
