@@ -25,7 +25,10 @@ export const actionDeck: Deck = {
       id: `action_1_${idx}`,
       affinity: CardAffinity.ATTACK,
       imagePath: getImagePath('actions_01'),
-      effects: [{ name: EffectType.PURCHASE_COST, value: 1 }],
+      effects: [
+        { name: EffectType.PURCHASE_COST, value: 1 },
+        { name: EffectType.OWN_CP, value: 1 },
+      ],
     })),
     ...generateCards(10, (idx) => ({
       id: `action_2_${idx}`,
