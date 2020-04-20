@@ -80,18 +80,29 @@ export const draftFighter = (
   G.isInitialDraft = isStillInitial
 }
 
-export const fillCreatureDeck = (G: ByTheSwordState) => {
-  const numMissingCreatures = MAX_CREATURES - G.currentCreatures.length
+export const fillCharacterDeck = (G: ByTheSwordState) => {
+  G.availableCharacters = shuffleArray(
+    Object.keys(G.characterDeck).filter(
+      (k) => !Object.values(G.public).some((pub) => pub.fighters.includes(k))
+    )
+  ).slice(0, 5)
+}
 
-  G.availableCreatures = [
-    ...G.availableCreatures,
-    ...shuffleArray(
-      Object.keys(G.creatureDeck).filter(
-        (k) =>
-          !G.currentCreatures.includes(k) && !G.availableCreatures.includes(k)
-      )
-    ).slice(0, numMissingCreatures),
-  ]
+export const fillCreatureDeck = (G: ByTheSwordState) => {
+  const nextCreatureIds = shuffleArray(
+    Object.keys(G.creatureDeck).filter(
+      (k) =>
+        !G.availableCreatures.includes(k) && !G.currentCreatures.includes(k)
+    )
+  )
+
+  while (
+    G.availableCreatures.length < MAX_CREATURES &&
+    nextCreatureIds.length > 0
+  ) {
+    const nextCharacterId = nextCreatureIds.pop()
+    G.availableCreatures.push(nextCharacterId)
+  }
 }
 
 export const draftCreature = (
@@ -175,8 +186,29 @@ export const discardAndRedraw = (
   // mark as done
   G.public[ctx.currentPlayer].passed = true
 
-  // draw up to full
-  drawToFullHand(G, ctx)
+  // draw up to full - not sure why the "common" version of this is broken
+  while (
+    G.public[ctx.currentPlayer].handSize <
+    G.players[ctx.currentPlayer].maxHandSize
+  ) {
+    if (G.secret.drawCardIds.length === 0) {
+      if (G.secret.discardCardIds.length === 0) {
+        // no cards to shuffle
+        break
+      }
+
+      // shuffle in discard deck
+      G.secret.drawCardIds = shuffleArray([
+        ...G.secret.drawCardIds,
+        ...G.secret.discardCardIds,
+      ])
+      G.secret.discardCardIds = []
+    }
+
+    const cardIdToDraw = G.secret.drawCardIds.pop()
+    G.players[ctx.currentPlayer].handCardIds.push(cardIdToDraw)
+    G.public[ctx.currentPlayer].handSize++
+  }
 
   ctx.events.endTurn()
 }

@@ -9,6 +9,7 @@ import {
   discardAndRedraw,
   pass,
   playCardWithTarget,
+  fillCharacterDeck,
 } from './moves'
 import { actionDeck, creatureDeck, characterDeck } from './cardDefinitions'
 import {
@@ -37,6 +38,7 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     },
     draftFighters: {
       next: 'draftCreatures',
+      onBegin: fillCharacterDeck,
       endIf: (G: ByTheSwordState) => {
         // lots of double negation here.
         // Basically we want to see if anybody still has a move
@@ -94,8 +96,6 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
 
           // nothing to discard
           if (player.handCardIds.length === 0) {
-            const pub = G.public[playerId]
-
             // simulate the discard
             discardAndRedraw(G, { ...ctx, currentPlayer: playerId })
           }
@@ -109,14 +109,6 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     playHand: {
       next: 'resolveHand',
       endIf: (G: ByTheSwordState) => {
-        console.log(
-          Object.values(G.public).some(
-            (pub) => pub.playedCards.length >= pub.fighters.length
-          ),
-          Object.values(G.public).some((pub) => pub.passed),
-          Object.values(G.players).some((priv) => priv.handCardIds.length === 0)
-        )
-
         // lots of double negation here.
         // Basically we want to see if anybody still has a move
         return !Object.keys(G.public).some((key) => {
@@ -131,8 +123,9 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
         })
       },
       onEnd: (G: ByTheSwordState) => {
+        resolveCombat(G)
+
         // clear all the passed players
-        console.log('Exit playHand phase')
         Object.values(G.public).forEach((p) => (p.passed = false))
 
         // discard all played cards

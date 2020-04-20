@@ -1,8 +1,7 @@
 import { Ctx } from 'boardgame.io'
 import { ByTheSwordState, ITargetedCard } from './state'
-import { ICardDefinition } from '@jou/common'
 import { getEffectInt } from './utilities'
-import { EffectType, LASTING_EFFECTS } from './effectDefinitions'
+import { EffectType } from './effectDefinitions'
 
 export interface ICombatResolution {
   attackerIds: string[]
@@ -70,14 +69,19 @@ const resolveAttackAgainstCreature = (
     getEffectInt(creature, EffectType.PURCHASE_COST) * creatureLevel
   G.arenaScore += popularity
 
-  for (const attackerId of result.attackerIds) {
-    const player = G.public[attackerId]
+  for (let i = 0; i < result.attackerIds.length; ++i) {
+    const player = G.public[result.attackerIds[i]]
     if (!player) continue
-
     player.score += popularity
   }
 
   // the creature is killed, discard it, it should automatically return to the pool
+  console.log(
+    'combat remove creature',
+    G.currentCreatures,
+    G.currentCreatures.filter((c) => c !== result.defenderId),
+    result.defenderId
+  )
   G.currentCreatures = G.currentCreatures.filter((c) => c !== result.defenderId)
 
   // bump the creature level
@@ -86,12 +90,13 @@ const resolveAttackAgainstCreature = (
   ).value = creatureLevel + 1
 }
 
-export const resolveCombat = (G: ByTheSwordState, ctx: Ctx) => {
+export const resolveCombat = (G: ByTheSwordState) => {
   // work out each combat one at a time
   const targetIds = [...new Set(G.targetedCards.map((tc) => tc.targetedAtId))]
 
   // calculate results
   const results = targetIds.map((tId) => resolveSingleCombat(G, tId))
+  console.log('resolving', results)
 
   // do something else clever with the results
   console.warn('Combat resolution lasting effects are not implemented')
@@ -107,6 +112,7 @@ export const resolveCombat = (G: ByTheSwordState, ctx: Ctx) => {
       continue
     }
 
+    console.log('RESOLVING', result)
     resolveAttackAgainstCreature(G, result)
   }
 }
