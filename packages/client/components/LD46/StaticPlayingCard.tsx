@@ -15,6 +15,7 @@ interface StaticPlayingCardProps {
   transform?: ICardTransform
   width: number
   height: number
+  selected?: boolean
   style?: React.CSSProperties
   hoverStyle?: React.CSSProperties
   onClick?: (card: ICardDefinition | null) => void
@@ -26,6 +27,7 @@ const StaticPlayingCard = ({
   width,
   height,
   hoverStyle,
+  selected,
   style,
 }: StaticPlayingCardProps) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
@@ -38,9 +40,9 @@ const StaticPlayingCard = ({
 
   return (
     <div
-      className={`block rounded-md mx-1 bg-cover bg-no-repeat transition-all duration-300${
-        isAnimating && isHovering ? ' z-50' : isAnimating ? 'z-40' : ''
-      }`}
+      className={`block box-border rounded-md mx-1 bg-cover bg-no-repeat transition-all duration-300${
+        isAnimating && isHovering ? ' z-50' : isAnimating ? ' z-40' : ''
+      }${selected ? ' border-4 border-red-500' : ''}`}
       onMouseEnter={
         hoverStyle
           ? () => {

@@ -16,6 +16,10 @@ const DraftCard = ({
   landscape,
   onSelect,
 }: DraftCardProps) => {
+  const width = landscape === true ? 120 * CARD_ASPECT_RATIO : 120
+  const height =
+    landscape === true ? width / CARD_ASPECT_RATIO : width * CARD_ASPECT_RATIO
+
   return (
     <div className="bg-gray-800 w-full h-screen overflow-hidden box-border flex flex-col justify-between items-center">
       <div> </div>
@@ -25,8 +29,8 @@ const DraftCard = ({
         {cards.map((card) => (
           <StaticPlayingCard
             card={card}
-            width={landscape === true ? 120 * CARD_ASPECT_RATIO : 120}
-            height={landscape === true ? 120 : 120 / CARD_ASPECT_RATIO}
+            width={width}
+            height={height}
             onClick={onSelect}
             key={`draft_card_${card.id}`}
             style={{

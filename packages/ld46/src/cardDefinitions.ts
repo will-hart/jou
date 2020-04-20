@@ -2,6 +2,12 @@ import { Deck, ICardDefinition, IEffectDefinition } from '@jou/common'
 
 import { EffectType } from './effectDefinitions'
 
+export enum CardAffinity {
+  ATTACK = 'attack',
+  EFFECT_SELF = 'effect_self',
+  RETARGET_ATTACK = 'retarget_attack',
+}
+
 const getImagePath = (name: string) =>
   `https://bythesword-cards.s3-ap-southeast-2.amazonaws.com/${name}.png`
 
@@ -17,13 +23,13 @@ export const actionDeck: Deck = {
   cards: [
     ...generateCards(20, (idx) => ({
       id: `action_1_${idx}`,
-      affinity: 'attack',
+      affinity: CardAffinity.ATTACK,
       imagePath: getImagePath('actions_01'),
       effects: [{ name: EffectType.PURCHASE_COST, value: 1 }],
     })),
     ...generateCards(10, (idx) => ({
       id: `action_2_${idx}`,
-      affinity: 'attack',
+      affinity: CardAffinity.ATTACK,
       imagePath: getImagePath('actions_02'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 2 },
@@ -33,7 +39,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(5, (idx) => ({
       id: `action_3_${idx}`,
-      affinity: 'attack',
+      affinity: CardAffinity.ATTACK,
       imagePath: getImagePath('actions_03'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 3 },
@@ -44,7 +50,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(2, (idx) => ({
       id: `action_4_${idx}`,
-      affinity: 'redirect',
+      affinity: CardAffinity.RETARGET_ATTACK,
       imagePath: getImagePath('actions_04'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 2 },
@@ -54,7 +60,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(2, (idx) => ({
       id: `action_5_${idx}`,
-      affinity: 'redirect',
+      affinity: CardAffinity.RETARGET_ATTACK,
       imagePath: getImagePath('actions_05'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 1 },
@@ -63,7 +69,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(3, (idx) => ({
       id: `action_6_${idx}`,
-      affinity: 'attack',
+      affinity: CardAffinity.ATTACK,
       imagePath: getImagePath('actions_06'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 4 },
@@ -74,7 +80,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(3, (idx) => ({
       id: `action_7_${idx}`,
-      affinity: 'effect',
+      affinity: CardAffinity.EFFECT_SELF,
       imagePath: getImagePath('actions_07'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 2 },
@@ -83,7 +89,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(1, (idx) => ({
       id: `action_8_${idx}`,
-      affinity: 'attack',
+      affinity: CardAffinity.ATTACK,
       imagePath: getImagePath('actions_08'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 5 },
@@ -93,7 +99,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(3, (idx) => ({
       id: `action_9_${idx}`,
-      affinity: 'redirect',
+      affinity: CardAffinity.RETARGET_ATTACK,
       imagePath: getImagePath('actions_09'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 4 },
@@ -103,7 +109,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(3, (idx) => ({
       id: `action_10_${idx}`,
-      affinity: 'redirect',
+      affinity: CardAffinity.RETARGET_ATTACK,
       imagePath: getImagePath('actions_10'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 3 },
@@ -113,7 +119,7 @@ export const actionDeck: Deck = {
     })),
     ...generateCards(5, (idx) => ({
       id: `action_11_${idx}`,
-      affinity: 'sacrifice',
+      affinity: CardAffinity.EFFECT_SELF,
       imagePath: getImagePath('actions_11'),
       effects: [
         { name: EffectType.PURCHASE_COST, value: 4 },

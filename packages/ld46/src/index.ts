@@ -160,6 +160,7 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
 
 export default ByTheSwordGame
 
+export { CardAffinity } from './cardDefinitions'
 export * from './layout'
 export * from './constants'
 export * from './state'

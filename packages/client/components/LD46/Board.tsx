@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
-import { ResizeObserver } from '@juggle/resize-observer'
-import useMeasure from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
 import { ByTheSwordState } from '@jou/ld46'
@@ -9,6 +7,7 @@ import DraftFighters from './phases/DraftFighters'
 import DraftCreatures from './phases/DraftCreatures'
 import DiscardCard from './phases/DiscardCard'
 import Spinner from '../Spinner'
+import PlayHand from './phases/PlayHand'
 
 export interface BoardProps {
   G: ByTheSwordState
@@ -60,6 +59,11 @@ const getBoardContext = (
           moveDone={!!state.public[meId]?.passed}
         />
       )
+
+    case 'playHand':
+      return (
+        <PlayHand moves={moves} state={state} meId={meId} isMyTurn={isMyTurn} />
+      )
     default:
       return <p>Unknown phase</p>
   }
@@ -76,20 +80,7 @@ const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
     setMeId(Object.keys(state?.players)?.[0])
   }, [setMeId, state, meId])
 
-  // measure the board so we can scale the layout to fit
-  const [ref, bounds] = useMeasure({
-    debounce: 10,
-    polyfill: ResizeObserver,
-  })
-
-  return (
-    <div
-      ref={ref}
-      className="flex-grow fixed top-0 left-0 w-full h-screen select-none"
-    >
-      {getBoardContext(state, context, meId, moves)}
-    </div>
-  )
+  return getBoardContext(state, context, meId, moves)
 }
 
 export default Board

@@ -3,7 +3,6 @@ import { Ctx } from 'boardgame.io'
 import { ByTheSwordState } from './state'
 import { INVALID_MOVE } from 'boardgame.io/core'
 import { EffectType } from './effectDefinitions'
-import { creatureDeck } from './cardDefinitions'
 import {
   shuffleArray,
   drawToFullHand,
@@ -169,6 +168,7 @@ export const discardAndRedraw = (
 // a NOP move, and NOPs all future moves for this player
 export const pass = (G: ByTheSwordState, ctx: Ctx) => {
   G.public[ctx.currentPlayer].passed = true
+  ctx.events.endTurn()
 }
 
 // all side effects are applied in the resolution phase
@@ -193,4 +193,6 @@ export const playCardWithTarget = (
     targetIsCreature,
     targetedAtId: targetId,
   })
+
+  ctx.events.endTurn()
 }
