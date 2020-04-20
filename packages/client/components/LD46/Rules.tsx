@@ -2,6 +2,7 @@ import * as React from 'react'
 import Link from 'next/link'
 
 import { LD46_GAME_NAME } from '@jou/ld46'
+import Alert, { AlertType } from '../Alert'
 
 const DemoGameRules = () => {
   return (
@@ -15,6 +16,17 @@ const DemoGameRules = () => {
         <Link href="/">
           <a>Back to game list</a>
         </Link>
+
+        <Alert type={AlertType.Warning}>
+          Due to current limitations in the{' '}
+          <a href="https://github.com/nicolodavis/boardgame.io/issues/628">
+            lobby implementation of the underlying libraries
+          </a>
+          , {LD46_GAME_NAME} currently only supports one or two player games.
+          You can play both sides of a two player game by joining the game with
+          the second client in a &quot;private browsing&quot; window.
+        </Alert>
+
         <div className="mt-4 italic">
           By the Sword is a (semi-)cooperative card game for 1-4 players. Guide
           your group of Gladiators through the arena in Ancient Rome. Work

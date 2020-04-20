@@ -12,8 +12,8 @@ const GAME_SETTINGS: IGameSettings = {
   },
   // eslint-disable-next-line @typescript-eslint/camelcase
   by_the_sword: {
-    minPlayers: 1,
-    maxPlayers: 4,
+    minPlayers: 2, // TODO set correct numbers when https://github.com/nicolodavis/boardgame.io/issues/628 is resolved
+    maxPlayers: 2,
   },
 }
 
