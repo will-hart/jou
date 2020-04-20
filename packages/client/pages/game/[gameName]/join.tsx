@@ -21,7 +21,7 @@ const getLobby = (
 ) => {
   const gameSettings = GAME_SETTINGS[gameName]
   const isReady =
-    room && room.players.filter((p) => !p.name).length > gameSettings.minPlayers
+    room && room.players.filter((p) => p.name).length >= gameSettings.minPlayers
 
   return (
     <>
