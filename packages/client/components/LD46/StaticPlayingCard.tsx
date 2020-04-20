@@ -14,6 +14,7 @@ interface StaticPlayingCardProps {
   card: ICardDefinition
   transform?: ICardTransform
   width: number
+  height: number
   style?: React.CSSProperties
   hoverStyle?: React.CSSProperties
   onClick?: (card: ICardDefinition | null) => void
@@ -23,6 +24,7 @@ const StaticPlayingCard = ({
   card,
   onClick,
   width,
+  height,
   hoverStyle,
   style,
 }: StaticPlayingCardProps) => {
@@ -30,7 +32,7 @@ const StaticPlayingCard = ({
   const [isAnimating, setIsAnimating] = useState<boolean>(false)
 
   const cardBackground = { backgroundImage: `url(${card.imagePath})` }
-  const size = { width, height: CARD_ASPECT_RATIO * width }
+  const size = { width, height }
 
   const useStyle = isHovering && hoverStyle ? hoverStyle : style
 

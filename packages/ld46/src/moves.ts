@@ -74,7 +74,7 @@ export const fillCreatureDeck = (G: ByTheSwordState) => {
   G.availableCreatures = [
     ...G.availableCreatures,
     ...shuffleArray(
-      Object.keys(creatureDeck).filter(
+      Object.keys(G.creatureDeck).filter(
         (k) =>
           !G.currentCreatures.includes(k) && !G.availableCreatures.includes(k)
       )

@@ -1,18 +1,11 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { ResizeObserver } from '@juggle/resize-observer'
-import useMeasure, { RectReadOnly } from 'react-use-measure'
+import useMeasure from 'react-use-measure'
 import { Ctx } from 'boardgame.io'
 
 import { ByTheSwordState } from '@jou/ld46'
 import DraftCard from './DraftCard'
-// import { LayoutSection, getCardLocationData } from '@jou/demo'
-
-// import PlayerList from '../../game/PlayerList'
-// import TurnIndicator from '../../game/TurnIndicator'
-// import PlayingCard from './PlayingCard'
-// import { getRangeArray, getDummyCard } from '../../utilities'
-// import { DEMO_BASE_CARD_PATH } from '../../constants'
 
 interface BoardProps {
   G: ByTheSwordState
@@ -72,15 +65,47 @@ const getBoardContext = (
           }
         />
       )
+
+    case 'draftCreatures':
+      return (
+        <DraftCard
+          landscape
+          cards={state.availableCreatures.map((cId) => state.creatureDeck[cId])}
+          helpText={
+            <div className="text-white">
+              <h1>
+                {isMyTurn ? (
+                  <span>Select a Creature to fight</span>
+                ) : (
+                  <span>Waiting for players...</span>
+                )}
+              </h1>
+              <h2>
+                Or{' '}
+                <button onClick={() => moves.pass()} className="text-green-300">
+                  click here
+                </button>{' '}
+                to pass
+              </h2>
+            </div>
+          }
+          onSelect={
+            isMyTurn
+              ? (card) => {
+                  moves.draftCreature(card.id)
+                }
+              : undefined
+          }
+        />
+      )
     default:
       return <p>Unknown phase</p>
   }
 }
 
-const Board = ({ G: state, ctx: context, moves, gameMetadata }: BoardProps) => {
+const Board = ({ G: state, ctx: context, moves }: BoardProps) => {
   // keep me/opponent Ids in state
   const [meId, setMeId] = useState<string>(null)
-  console.log(gameMetadata)
 
   // effect that updates my id / opponent id on changes
   useEffect(() => {

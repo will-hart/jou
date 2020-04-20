@@ -131,10 +131,8 @@ export const creatureDeck: Deck = {
       .map((_, idx) => ({
         id: `creature_${idx + 1}`,
         affinity: 'creature',
-        imagePath: getImagePath(
-          `creatures_${(idx + 1).toString().padStart(2, '0')}`
-        ),
-        effects: [],
+        imagePath: getImagePath(`creatures_${idx + 1}`),
+        effects: [{ name: EffectType.PURCHASE_COST, value: 5 }],
       })),
   ],
 }

@@ -1,5 +1,5 @@
 import { Game, Ctx } from 'boardgame.io'
-import { PlayerView } from 'boardgame.io/core'
+import { PlayerView, ActivePlayers } from 'boardgame.io/core'
 
 import { ByTheSwordState, stateFactory } from './state'
 import {
@@ -44,15 +44,27 @@ const ByTheSwordGame: Game<ByTheSwordState> = {
     },
     draftCreatures: {
       onBegin: fillCreatureDeck,
+      endIf: (G: ByTheSwordState) => {
+        // lots of double negation here.
+        // Basically we want to see if anybody still has a move
+        return !Object.values(G.public).some((pub) => {
+          return !pub.passed
+        })
+      },
+      onEnd: (G: ByTheSwordState) => {
+        // clear all the passed players
+        Object.values(G.public).forEach((p) => (p.passed = false))
+      },
       next: 'draftHand',
       turn: { moveLimit: 1 },
       moves: {
-        draftCreature,
+        draftCreature: { move: draftCreature, client: false },
+        pass,
       },
     },
     draftHand: {
       next: 'playHand',
-      turn: { moveLimit: 1 },
+      turn: { activePlayers: ActivePlayers.ALL_ONCE },
       moves: { discardAndRedraw },
     },
     playHand: {
